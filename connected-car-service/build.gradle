@@ -27,6 +27,5 @@ dependencies {
 	runtimeOnly 'io.springfox:springfox-swagger-ui:2.9.2'
 	runtimeOnly 'mysql:mysql-connector-java'
 	//runtimeOnly 'com.fasterxml.jackson.module:jackson-modules-java8:2.9.9'
-	
 }
 
