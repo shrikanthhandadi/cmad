@@ -8,8 +8,8 @@ import javax.persistence.Id;
 
 import com.cisco.iot.ccs.model.Severity;
 
-@Entity(name = "car_event")
-public class CarEventEntity {
+@Entity(name = "event")
+public class EventEntity {
 
 	@Id
 	@GeneratedValue

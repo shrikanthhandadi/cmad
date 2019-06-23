@@ -5,15 +5,15 @@ import java.util.Date;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel
-public class CarEvent {
+public class Event {
 
 	private Long id;
+	
+	private Long carId;
 	
 	private String make;
 	
 	private String model;
-	
-	private Long carId;
 
 	private Severity severity;
 	
