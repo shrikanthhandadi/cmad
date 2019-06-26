@@ -28,9 +28,6 @@ public class EventController {
 
 	private static final Logger log = LoggerFactory.getLogger(EventController.class);
 
-	// private static final String ALL_FIELDS =
-	// "id,carId,make,model,severity,datedata";
-
 	@Autowired
 	private EventService eventService;
 
@@ -63,7 +60,8 @@ public class EventController {
 	public ResponseEntity<Page<Event>> get(
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
 			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-			@ApiParam("Make of car") @RequestParam String make, @ApiParam("Model of car") @RequestParam String model) {
+			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make,
+			@ApiParam("Model of car") @RequestParam(name = "model", required = false) String model) {
 		log.info("Started fetching events, pageSize: {}, pageNum {}, make {}, model {}", pageSize, pageNum, make,
 				model);
 		Page<Event> page = null;

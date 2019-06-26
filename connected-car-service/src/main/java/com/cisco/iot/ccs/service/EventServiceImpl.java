@@ -29,14 +29,14 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Page<Event> get(int pageSize, int pageNumber) {
 		org.springframework.data.domain.Page<EventEntity> entityPage = eventDao.findAll(pageSize, pageNumber);
-		Page<Event> page = DataUtils.toPage(entityPage, Event.class);
+		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
 		return page;
 	}
 
 	@Override
 	public Page<Event> get(String make, int pageSize, int pageNumber) {
 		org.springframework.data.domain.Page<EventEntity> entityPage = eventDao.findAll(make, pageSize, pageNumber);
-		Page<Event> page = DataUtils.toPage(entityPage, Event.class);
+		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
 		return page;
 	}
 
@@ -44,7 +44,7 @@ public class EventServiceImpl implements EventService {
 	public Page<Event> get(String make, String model, int pageSize, int pageNumber) {
 		org.springframework.data.domain.Page<EventEntity> entityPage = eventDao.findAll(make, model, pageSize,
 				pageNumber);
-		Page<Event> page = DataUtils.toPage(entityPage, Event.class);
+		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
 		return page;
 	}
 

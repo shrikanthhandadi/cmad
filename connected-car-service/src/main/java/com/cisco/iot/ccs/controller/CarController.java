@@ -32,8 +32,6 @@ public class CarController {
 
 	private static final Logger log = LoggerFactory.getLogger(CarController.class);
 
-	private static final String ALL_FIELDS = "id,make,model,year,regNum";
-
 	@Autowired
 	private CarService carService;
 
@@ -94,19 +92,18 @@ public class CarController {
 	public ResponseEntity<Page<Car>> get(
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
 			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-			@ApiParam("Comma separated list of fields") @RequestParam(name = "fields", defaultValue = ALL_FIELDS) String fields,
-			@ApiParam("Distinct group") @RequestParam(name = "groupBy", defaultValue = "false") boolean groupBy,
+			@ApiParam("Comma separated list of fields") @RequestParam(name = "fields", required = false) String fields,
+			@ApiParam("Distinct values") @RequestParam(name = "distinct", defaultValue = "false") boolean distinct,
 			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make) {
 		log.info("Started fetching cars, pageSize: {}, pageNum {}, fields {}, groupBy {}", pageSize, pageNum, fields,
-				groupBy);
+				distinct);
 		Page<Car> page = null;
 		try {
-			String[] fieldsArr = fields.split(",");
-			if (make == null) {
-				page = carService.get(pageSize, pageNum, fieldsArr, groupBy);
-			} else {
-				page = carService.get(make, pageSize, pageNum, fieldsArr, groupBy);
+			String[] fieldsArr = null;
+			if (fields != null) {
+				fieldsArr = fields.split(",");
 			}
+			page = carService.get(make, fieldsArr, distinct, pageSize, pageNum);
 			log.info("Finished fetching cars with total: {}", page.getData().size());
 			return new ResponseEntity<Page<Car>>(page, HttpStatus.CREATED);
 		} catch (InvalidDataException e) {

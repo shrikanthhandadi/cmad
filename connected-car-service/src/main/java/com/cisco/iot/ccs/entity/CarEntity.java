@@ -2,6 +2,8 @@ package com.cisco.iot.ccs.entity;
 
 import java.time.Year;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +19,8 @@ public class CarEntity {
 
 	private String model;
 
+	@Column(name = "year", columnDefinition = "smallint")
+	@Convert(converter = YearAttributeConverter.class)
 	private Year year;
 
 	private String regNum;
@@ -26,6 +30,11 @@ public class CarEntity {
 
 	public CarEntity(String make) {
 		this.make = make;
+	}
+
+	public CarEntity(String make, String model) {
+		this.make = make;
+		this.model = model;
 	}
 
 	public CarEntity(Long id, String make, String model, Year year, String regNum) {

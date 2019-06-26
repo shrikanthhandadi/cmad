@@ -36,17 +36,16 @@ public class CarServiceImpl implements CarService {
 	}
 
 	@Override
-	public Page<Car> get(int pageSize, int pageNumber, String[] fields, boolean groupBy) {
-		org.springframework.data.domain.Page<CarEntity> entityPage = carDao.findAll(pageSize, pageNumber, fields, groupBy);
-		Page<Car> page = DataUtils.toPage(entityPage, Car.class);
-		return page;
-	}
-
-	@Override
-	public Page<Car> get(String make, int pageSize, int pageNumber, String[] fields, boolean groupBy) {
-		org.springframework.data.domain.Page<CarEntity> entityPage = carDao.findAll(make, pageSize, pageNumber, fields,
-				groupBy);
-		Page<Car> page = DataUtils.toPage(entityPage, Car.class);
+	public Page<Car> get(String make, String[] fields, boolean distinct, int pageSize, int pageNumber) {
+		org.springframework.data.domain.Page<CarEntity> entityPage = null;
+		if (fields == null && make == null) {
+			entityPage = carDao.findAll(pageSize, pageNumber);
+		} else if (fields == null && make != null) {
+			entityPage = carDao.findAll(make, pageSize, pageNumber);
+		} else {
+			entityPage = carDao.findAll(make, fields, distinct, pageSize, pageNumber);
+		}
+		Page<Car> page = DataUtils.toPageModel(entityPage, Car.class);
 		return page;
 	}
 
