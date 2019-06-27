@@ -38,7 +38,7 @@ public class EventControllerPT {
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
-		executeCreate("src/test/resources/event/event.csv", 5, 1, 2);
+		executeCreate("src/test/resources/event/event.csv", 10, 2, 2);
 	}
 
 	private void executeCreate(String location, int concurrency, int rampupSeconds, int loop)
@@ -55,7 +55,7 @@ public class EventControllerPT {
 		ExecutorService execServ = Executors.newFixedThreadPool(concurrency);
 		long intervalMillis = TimeUnit.SECONDS.toMillis(rampupSeconds) / concurrency;
 		for (int i = 0; i < loop; i++) {
-			List<T> res = executePerf(execServ, concurrency, intervalMillis, payloads);
+			List<T> res = executePerf(execServ, concurrency, intervalMillis, i, payloads);
 			results.addAll(res);
 		}
 		execServ.shutdown();
@@ -63,13 +63,14 @@ public class EventControllerPT {
 		return results;
 	}
 
-	private <T> List<T> executePerf(ExecutorService executorService, int concurrency, long intervalMillis,
+	private <T> List<T> executePerf(ExecutorService executorService, int concurrency, long intervalMillis, int loop,
 			List<Callable<T>> payloads) throws InterruptedException {
 		List<Future<T>> futures = new ArrayList<>();
 		List<T> results = new ArrayList<T>();
-		int i = 0;
+		int payloadSize = payloads.size();
+		int i = loop * concurrency;
 		while (concurrency > 0) {
-			if (i == payloads.size()) {
+			if (i >= payloadSize) {
 				i = 0;
 			}
 			Future<T> future = executorService.submit(payloads.get(i));
