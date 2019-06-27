@@ -29,7 +29,7 @@ public class CarServiceImpl implements CarService {
 	@Override
 	public Car get(Long id) {
 		Optional<CarEntity> optional = carDao.findById(id);
-		if (optional.isEmpty()) {
+		if (!optional.isPresent()) {
 			throw new DataNotFoundException("Unable to find car for id " + id);
 		}
 		return BeanUtils.copy(optional.get(), Car.class);

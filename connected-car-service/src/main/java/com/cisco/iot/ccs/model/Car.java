@@ -56,5 +56,13 @@ public class Car {
 	public void setRegNum(String regNum) {
 		this.regNum = regNum;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Car [id=").append(id).append(", make=").append(make).append(", model=").append(model)
+				.append(", year=").append(year).append(", regNum=").append(regNum).append("]");
+		return builder.toString();
+	}
 	
 }
