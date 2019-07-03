@@ -18,3 +18,7 @@ services:
          MYSQL_DATABASE: ccs
          MYSQL_USER: cmad
          MYSQL_PASSWORD: cmad
+      volumes:
+      - ccs-data:/var/lib/mysql
+volumes:
+   ccs-data: 
