@@ -28,7 +28,7 @@ public class CarControllerPT {
 
 	RestTemplate restTemplate = new RestTemplate();
 
-	private static final int port = 9090;
+	private static final int port = 2020;
 
 	final String baseUrl = "http://localhost:" + port + "/ccs";
 

@@ -3,7 +3,10 @@ services:
    ccs:
       image: shrikanthhandadi/ccs
       ports:
-      - 9090:9090
+      - 2020:2020
+      restart: on-failure
+      links:
+      - mysql:mysql
       depends_on:
       - mysql
    mysql:
