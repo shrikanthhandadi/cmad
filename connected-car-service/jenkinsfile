@@ -22,7 +22,6 @@ pipeline{
 		    agent{
 		          docker{
 		            image 'gradle:5.5.0-jdk8'
-		            args '-v $HOME/.gradle:/home/gradle/.gradle'
 		          }
 
 		    }
@@ -34,11 +33,10 @@ pipeline{
             }
         }
         stage('package'){
-			when { branch "master"}
+			//when { branch "master"}
 		    agent{
 		          docker{
 		            image 'gradle:5.5.0-jdk8'
-		            args '-v $HOME/.gradle:/home/gradle/.gradle'
 		          }
 
 		    }
@@ -52,12 +50,12 @@ pipeline{
         }
 		
 		stage('docker-package'){
-			when { branch "master"}
+			//when { branch "master"}
 		          agent any
 		          steps{
 		            echo 'Packaging CCS app with docker'
 		            script{
-		              docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+		              docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
 		                  def ccsImage = docker.build("shrikanthhandadi/connected-car-service:v${env.BUILD_ID}", "./connected-car-service:")
 		                  ccsImage.push()
 		                  ccsImage.push("latest")
@@ -67,7 +65,7 @@ pipeline{
 		}
 			  
 	  	stage('deploy'){
-			when { branch "master"}
+			//when { branch "master"}
 	  		    agent any
 	  		          steps{
 	  		            script{
