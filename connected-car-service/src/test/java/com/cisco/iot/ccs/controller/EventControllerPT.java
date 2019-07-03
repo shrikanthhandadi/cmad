@@ -38,7 +38,7 @@ public class EventControllerPT {
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
-		executeCreate("src/test/resources/event/event.csv", 10, 2, 2);
+		executeCreate("src/test/resources/event/event.csv", 1, 3, 20*3);
 	}
 
 	private void executeCreate(String location, int concurrency, int rampupSeconds, int loop)
