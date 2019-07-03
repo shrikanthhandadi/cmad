@@ -9,6 +9,7 @@ buildscript{
     }
 }
 
+apply plugin: "maven"
 apply plugin: "war"
 apply plugin: "eclipse-wtp"
 apply plugin: "org.springframework.boot"
@@ -30,7 +31,15 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	
 	testImplementation 'junit:junit:4.12'
+	testImplementation 'org.mockito:mockito-core:2.28.2'
+	testImplementation 'org.apache.commons:commons-lang3:3.9'
 	
 	//runtimeOnly 'com.fasterxml.jackson.module:jackson-modules-java8:2.9.9'
 }
 
+
+test {
+  filter {
+      includeTestsMatching "*Test"
+   }
+}
