@@ -85,7 +85,7 @@ public class CarController {
 		}
 	}
 
-	@ApiOperation(value = "Get all the cars details  ", notes = "get models")
+	@ApiOperation(value = "Get all cars  ", notes = "get models")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
 			@ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 200, message = "Found", response = Car.class, responseContainer = "List"),
