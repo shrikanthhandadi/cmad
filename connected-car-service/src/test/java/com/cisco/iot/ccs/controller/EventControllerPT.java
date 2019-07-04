@@ -32,13 +32,13 @@ public class EventControllerPT {
 
 	RestTemplate restTemplate = new RestTemplate();
 
-	private static final int port = 9090;
+	private static final int port = 2020;
 
 	final String baseUrl = "http://localhost:" + port + "/ccs";
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
-		executeCreate("src/test/resources/event/event.csv", 1, 3, 20*3);
+		executeCreate("src/test/resources/event/event.csv", 2, 1, Double.valueOf(1 * 60 * 0.25).intValue());
 	}
 
 	private void executeCreate(String location, int concurrency, int rampupSeconds, int loop)

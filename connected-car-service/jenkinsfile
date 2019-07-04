@@ -33,7 +33,7 @@ pipeline{
             }
         }
         stage('package'){
-			//when { branch "master"}
+			when { branch "master"}
 		    agent{
 		          docker{
 		            image 'gradle:5.5.0-jdk8'
@@ -50,7 +50,7 @@ pipeline{
         }
 		
 		stage('docker-package'){
-			//when { branch "master"}
+			when { branch "master"}
 		          agent any
 		          steps{
 		            echo 'Packaging CCS app with docker'
@@ -65,7 +65,7 @@ pipeline{
 		}
 			  
 	  	stage('deploy'){
-			//when { branch "master"}
+			when { branch "master"}
 	  		    agent any
 	  		          steps{
 	  		            script{
