@@ -12,17 +12,17 @@ var config = {
 			publicPath: "/app/"
 		},
 		module:{
-			loaders: [
+			rules: [
 				{
 					test: /\.js?/,
 					include: SRC_DIR,
 					loader: "babel-loader",
 					query:{
-						presets: ["react","es2015","stage-2"]
+						presets: ["@babel/preset-env", "@babel/react"]
+						//presets: ['es2015', 'react']
 					}
 				}
 			]
 		}
 };
-
 module.exports = config;
