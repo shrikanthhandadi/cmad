@@ -7,14 +7,14 @@ export class Home extends React.Component {
         this.state={
             age: props.initialAge,
             status: 0,
-            homeLink: "New Home Link"
+            homeLink: props.initialHomeLink
         }
         setTimeout(()=>{
             this.setState({
-                status: status + 1
+                status: 1
             })
         },3000);
-        console.log("constuction age "+this.state.age)
+        console.log("Home: constuction age ", props, this.state)
     }
     onAgeButtonClick(){
        this.setState({
@@ -58,6 +58,44 @@ export class Home extends React.Component {
             </div>
         );
     }
+
+    //life cycle methods
+    //immeditately before initial rendering
+    componentWillMount(){
+        console.log("Home: componentWillMount");
+    }
+
+    //immediately after initial rendering
+    componentDidMount(){
+        console.log("Home: componentDidMount");
+    }
+
+    //when component receives new props
+    componentWillReceiveProps(nextProps){
+        console.log("Home: componentWillReceiveProps ", nextProps);
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        console.log("Home: shouldComponentUpdate ", nextProps, nextState);
+        /*
+        if(nextState.status === 1){
+            return false;
+        }
+        */
+        return true;
+    }
+
+    componentWillUpdate(nextProps, nextState){
+        console.log("Home: componentWillUpdate ", nextProps, nextState);
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        console.log("Home: componentDidUpdate ", prevProps, prevState);
+    }
+
+    componentWillUnmount(){
+        console.log("Home: componentWillUnmount");
+    }
 }
 
 Home.propTypes = {
@@ -66,5 +104,6 @@ Home.propTypes = {
     user: PropTypes.object,
     children: PropTypes.element.isRequired,
    // greet: PropTypes.func
+    initialHomeLink: PropTypes.string,
     updateHomeLink: PropTypes.func
 }
