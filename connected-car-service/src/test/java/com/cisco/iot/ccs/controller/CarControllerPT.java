@@ -28,13 +28,13 @@ public class CarControllerPT {
 
 	RestTemplate restTemplate = new RestTemplate();
 
-	private static final int port = 2020;
+	private static final int port = 9090;
 
 	final String baseUrl = "http://localhost:" + port + "/ccs";
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
-		executeCreate("src/test/resources/car/car.csv", 10, 2, 2);
+		executeCreate("src/test/resources/car/car.csv", 5, 1, 5);
 	}
 
 	private void executeCreate(String location, int concurrency, int rampupSeconds, int loop)

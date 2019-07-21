@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Api("/v1")
 @RestController("/v1/cars") // ideally cars path should be added here, however swagger doc not working
+@CrossOrigin
 public class CarController {
 
 	private static final Logger log = LoggerFactory.getLogger(CarController.class);

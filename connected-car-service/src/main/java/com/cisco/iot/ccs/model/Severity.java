@@ -4,8 +4,5 @@ import io.swagger.annotations.ApiModel;
 
 @ApiModel
 public enum Severity {
-	INFO,
-	WARNING,
-	CRITICAL,
-	FATAL
+	DEBUG, INFO, WARNING, CRITICAL, FATAL
 }

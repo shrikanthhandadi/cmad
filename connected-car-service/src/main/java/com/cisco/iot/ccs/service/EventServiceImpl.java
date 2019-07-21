@@ -1,6 +1,6 @@
 package com.cisco.iot.ccs.service;
 
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import com.cisco.iot.ccs.dao.EventDao;
 import com.cisco.iot.ccs.entity.EventEntity;
 import com.cisco.iot.ccs.model.Event;
 import com.cisco.iot.ccs.model.Page;
-import com.cisco.iot.ccs.model.Severity;
+import com.cisco.iot.ccs.model.Stat;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -49,9 +49,24 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Map<Severity, Long> getStats(String make, String model) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Stat> getStats() {
+		List<com.cisco.iot.ccs.dao.EventDao.Stat> stats = eventDao.getStats();
+		List<Stat> statCounts = BeanUtils.copyValues(stats, Stat.class);
+		return statCounts;
+	}
+
+	@Override
+	public List<Stat> getStats(String make) {
+		List<com.cisco.iot.ccs.dao.EventDao.Stat> stats = eventDao.getStats(make);
+		List<Stat> statCounts = BeanUtils.copyValues(stats, Stat.class);
+		return statCounts;
+	}
+
+	@Override
+	public List<Stat> getStats(String make, String model) {
+		List<com.cisco.iot.ccs.dao.EventDao.Stat> stats = eventDao.getStats(make, model);
+		List<Stat> statCounts = BeanUtils.copyValues(stats, Stat.class);
+		return statCounts;
 	}
 
 }

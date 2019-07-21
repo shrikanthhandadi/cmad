@@ -1,10 +1,10 @@
 package com.cisco.iot.ccs.service;
 
-import java.util.Map;
+import java.util.List;
 
 import com.cisco.iot.ccs.model.Event;
 import com.cisco.iot.ccs.model.Page;
-import com.cisco.iot.ccs.model.Severity;
+import com.cisco.iot.ccs.model.Stat;
 
 public interface EventService {
 
@@ -16,6 +16,9 @@ public interface EventService {
 
 	Page<Event> get(String make, String model, int pageSize, int pageNumber);
 
-	Map<Severity, Long> getStats(String make, String model);
+	List<Stat> getStats();
 
+	List<Stat> getStats(String make);
+
+	List<Stat> getStats(String make, String model);
 }

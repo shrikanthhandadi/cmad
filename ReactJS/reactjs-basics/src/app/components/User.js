@@ -1,11 +1,12 @@
 import React from "react";
 
-export class Home extends React.Component {
+export class User extends React.Component {
     
     render() {
         return (
             <div>
-               <h3>Home</h3>
+               <h3>The user page</h3>
+               <p>User ID:</p>
             </div>
         );
     }

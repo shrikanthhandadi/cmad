@@ -13,6 +13,8 @@ apply plugin: "war"
 apply plugin: "eclipse-wtp"
 apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
+apply plugin: "maven"
+
 
 repositories {
     jcenter()
@@ -24,6 +26,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'commons-beanutils:commons-beanutils:1.9.3'
+	implementation 'org.apache.commons:commons-lang3:3.9'
 	
 	
 	runtimeOnly 'io.springfox:springfox-swagger-ui:2.9.2'
@@ -31,7 +34,6 @@ dependencies {
 	
 	testImplementation 'junit:junit:4.12'
 	testImplementation 'org.mockito:mockito-core:2.28.2'
-	testImplementation 'org.apache.commons:commons-lang3:3.9'
 	
 	//runtimeOnly 'com.fasterxml.jackson.module:jackson-modules-java8:2.9.9'
 }

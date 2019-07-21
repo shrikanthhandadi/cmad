@@ -32,18 +32,18 @@ public class EventControllerPT {
 
 	RestTemplate restTemplate = new RestTemplate();
 
-	private static final int port = 2020;
+	private static final int port = 9090;
 
 	final String baseUrl = "http://localhost:" + port + "/ccs";
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
-		executeCreate("src/test/resources/event/event.csv", 2, 1, Double.valueOf(1 * 60 * 0.25).intValue());
+		executeCreate("src/test/resources/event/event.csv", 5, 1, Double.valueOf(1 * 60 * 2).intValue());
 	}
 
 	private void executeCreate(String location, int concurrency, int rampupSeconds, int loop)
 			throws IOException, InterruptedException {
-		List<Event> data = buildEvents(concurrency);
+		List<Event> data = buildEvents(concurrency * loop);
 		List<Callable<Long>> createPayloads = buildCreatePayloads(data);
 		List<Long> ids = executePerfTest(createPayloads, concurrency, rampupSeconds, loop);
 		log.info("Created data ids: {}", ids);
@@ -125,16 +125,17 @@ public class EventControllerPT {
 		Random rand = new Random();
 		List<Severity> svs = Arrays.asList(Severity.values());
 		while (maxSize > 0) {
-			Car car = cars.get(rand.nextInt(size));
-			Event event = new Event();
-			event.setCarId(car.getId());
-			event.setMake(car.getMake());
-			event.setModel(car.getModel());
-			event.setSeverity(svs.get(rand.nextInt(svs.size())));
-			event.setDate(new Date());
-			event.setData("{\"temp\":40}");
-			events.add(event);
-			maxSize--;
+			for(Car car : cars) {
+				Event event = new Event();
+				event.setCarId(car.getId());
+				event.setMake(car.getMake());
+				event.setModel(car.getModel());
+				event.setSeverity(svs.get(rand.nextInt(svs.size())));
+				event.setDate(new Date());
+				event.setData("{\"temp\":40}");
+				events.add(event);
+				maxSize--;
+			}
 		}
 		return events;
 	}

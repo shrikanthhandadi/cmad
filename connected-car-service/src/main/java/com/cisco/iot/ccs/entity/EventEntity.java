@@ -3,6 +3,8 @@ package com.cisco.iot.ccs.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -21,6 +23,7 @@ public class EventEntity {
 
 	private Long carId;
 	
+    @Enumerated(EnumType.STRING)
 	private Severity severity;
 
 	private Date date;

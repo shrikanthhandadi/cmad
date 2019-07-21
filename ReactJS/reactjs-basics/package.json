@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "start": "npm run build",
-    "build": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --port 3030 --content-base src/ --inline --hot",
+    "build": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --port 3030 --content-base src/ --inline --hot --history-api-fallback",
     "build:prod": "webpack -d && cp src/index.html dist/index.html"
   },
   "keywords": [
@@ -15,7 +15,9 @@
   "license": "MIT",
   "dependencies": {
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
