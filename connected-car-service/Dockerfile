@@ -4,7 +4,8 @@ WORKDIR /app
 
 COPY .  .
 
-RUN gradle bootJar && \
+RUN gradle clean && \
+	gradle bootJar && \
     mv build/libs/connected-car-service.jar /run/ccs.jar && \
     rm -rf /app/*
 

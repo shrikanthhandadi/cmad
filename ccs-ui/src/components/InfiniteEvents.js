@@ -64,7 +64,7 @@ export class InfiniteEvents extends React.Component {
     loadEvents = () => {
         this.setState({ isLoading: true }, () => {
             request
-                .get('http://localhost:9090/ccs/events?make=' + this.state.make + '&model=' + this.state.model + '&pageSize=' + this.props.pageSize + '&pageNum=' + this.state.pageNumber)
+                .get('http://ccs:9090/ccs/events?make=' + this.state.make + '&model=' + this.state.model + '&pageSize=' + this.props.pageSize + '&pageNum=' + this.state.pageNumber)
                 .then((results) => {
                     // Creates a massaged array of event data
                     const nextEvents = results.body.data.map(event => ({

@@ -79,3 +79,17 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ```
 npm install react-select superagent react-google-charts --save
 ```
+### Build docker
+
+```
+docker build -t shrikanthhandadi/ccs-ui:1.0 .
+```
+
+```
+docker tag shrikanthhandadi/ccs-ui:1.0 shrikanthhandadi/ccs-ui
+```
+
+```
+docker push shrikanthhandadi/ccs-ui:1.0
+docker push shrikanthhandadi/ccs-ui
+```

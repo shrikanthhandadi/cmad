@@ -37,7 +37,7 @@ export class EventFilter extends React.Component {
     }
 
     loadMakes() {
-        fetch('http://localhost:9090/ccs/cars?distinct=true&fields=make&pageNum=0&pageSize=1000')
+        fetch('http://ccs:9090/ccs/cars?distinct=true&fields=make&pageNum=0&pageSize=1000')
             .then(res => res.json())
             .then((data) => {
                 const carMakes = data.data.map(car => ({
@@ -55,7 +55,7 @@ export class EventFilter extends React.Component {
     }
 
     loadModels(selectedOption) {
-        fetch('http://localhost:9090/ccs/cars?distinct=true&fields=model&make=' + selectedOption.value + '&pageNum=0&pageSize=1000')
+        fetch('http://ccs:9090/ccs/cars?distinct=true&fields=model&make=' + selectedOption.value + '&pageNum=0&pageSize=1000')
             .then(res => res.json())
             .then((data) => {
                 const carModels = data.data.map(car => ({
