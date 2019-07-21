@@ -6,7 +6,7 @@ import { EventFilter } from "./components/EventFilter";
 import { InfiniteEvents } from "./components/InfiniteEvents";
 import { EventSummary } from "./components/EventSummary";
 
-class App extends React.Component {
+export default class App extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -56,5 +56,3 @@ class App extends React.Component {
         );
     }
 }
-
-render(<App />, window.document.getElementById("app"));
