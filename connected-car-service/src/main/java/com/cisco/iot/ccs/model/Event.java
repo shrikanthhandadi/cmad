@@ -2,23 +2,31 @@ package com.cisco.iot.ccs.model;
 
 import java.util.Date;
 
-import io.swagger.annotations.ApiModel;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 
-@ApiModel
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.cisco.iot.ccs.model.Severity;
+
+@Document(collection = "event")
 public class Event {
 
+	@Id
 	private Long id;
-	
-	private Long carId;
-	
+
 	private String make;
-	
+
 	private String model;
 
-	private Severity severity;
+	private Long carId;
 	
+    @Enumerated(EnumType.STRING)
+	private Severity severity;
+
 	private Date date;
-		
+
 	private String data;
 
 	public Long getId() {

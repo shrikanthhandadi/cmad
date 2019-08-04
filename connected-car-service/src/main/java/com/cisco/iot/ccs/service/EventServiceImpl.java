@@ -3,12 +3,12 @@ package com.cisco.iot.ccs.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.cisco.iot.ccs.common.BeanUtils;
 import com.cisco.iot.ccs.common.DataUtils;
 import com.cisco.iot.ccs.dao.EventDao;
-import com.cisco.iot.ccs.entity.EventEntity;
 import com.cisco.iot.ccs.model.Event;
 import com.cisco.iot.ccs.model.Page;
 import com.cisco.iot.ccs.model.Stat;
@@ -21,29 +21,30 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Event create(Event carEvent) {
-		EventEntity eventEntity = BeanUtils.copy(carEvent, EventEntity.class);
-		eventEntity = eventDao.save(eventEntity);
-		return BeanUtils.copy(eventEntity, Event.class);
+		Event event = BeanUtils.copy(carEvent, Event.class);
+		event = eventDao.save(event);
+		return BeanUtils.copy(event, Event.class);
 	}
 
 	@Override
 	public Page<Event> get(int pageSize, int pageNumber) {
-		org.springframework.data.domain.Page<EventEntity> entityPage = eventDao.findAll(pageSize, pageNumber);
+		org.springframework.data.domain.Page<Event> entityPage = eventDao.findAll(PageRequest.of(pageNumber, pageSize));
 		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
 		return page;
 	}
 
 	@Override
 	public Page<Event> get(String make, int pageSize, int pageNumber) {
-		org.springframework.data.domain.Page<EventEntity> entityPage = eventDao.findAll(make, pageSize, pageNumber);
+		org.springframework.data.domain.Page<Event> entityPage = eventDao.findByMake(make,
+				PageRequest.of(pageNumber, pageSize));
 		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
 		return page;
 	}
 
 	@Override
 	public Page<Event> get(String make, String model, int pageSize, int pageNumber) {
-		org.springframework.data.domain.Page<EventEntity> entityPage = eventDao.findAll(make, model, pageSize,
-				pageNumber);
+		org.springframework.data.domain.Page<Event> entityPage = eventDao.findByMakeAndModel(make, model,
+				PageRequest.of(pageNumber, pageSize));
 		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
 		return page;
 	}

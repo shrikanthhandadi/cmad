@@ -4,7 +4,7 @@ public class Stat {
 
 	private Severity severity;
 
-	private Integer count;
+	private int count;
 
 	public Severity getSeverity() {
 		return severity;
@@ -14,11 +14,11 @@ public class Stat {
 		this.severity = severity;
 	}
 
-	public Integer getCount() {
+	public int getCount() {
 		return count;
 	}
 
-	public void setCount(Integer count) {
+	public void setCount(int count) {
 		this.count = count;
 	}
 

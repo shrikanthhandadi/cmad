@@ -1,4 +1,4 @@
-package com.cisco.iot.ccs.entity;
+package com.cisco.iot.ccs.model;
 
 import java.time.Year;
 

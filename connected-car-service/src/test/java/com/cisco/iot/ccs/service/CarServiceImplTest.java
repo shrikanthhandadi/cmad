@@ -25,7 +25,6 @@ import org.mockito.stubbing.Answer;
 import org.springframework.data.domain.Page;
 
 import com.cisco.iot.ccs.dao.CarDao;
-import com.cisco.iot.ccs.entity.CarEntity;
 import com.cisco.iot.ccs.model.Car;
 
 public class CarServiceImplTest {
@@ -38,7 +37,7 @@ public class CarServiceImplTest {
 	private CarDao carDao;
 
 	@Mock
-	Page<CarEntity> pageM;
+	Page<Car> pageM;
 
 	@InjectMocks
 	private CarServiceImpl carService;
@@ -50,14 +49,14 @@ public class CarServiceImplTest {
 
 	@Test
 	public void testCreate() {
-		CarEntity carE = new CarEntity();
+		Car carE = new Car();
 		String make = "audi";
 		carE.setMake(make);
 		Mockito.when(carDao.save(ArgumentMatchers.argThat(new CarArgumentMatchers(carE))))
-				.then(new Answer<CarEntity>() {
+				.then(new Answer<Car>() {
 					@Override
-					public CarEntity answer(InvocationOnMock invocation) throws Throwable {
-						CarEntity ent = (CarEntity) invocation.getArgument(0);
+					public Car answer(InvocationOnMock invocation) throws Throwable {
+						Car ent = (Car) invocation.getArgument(0);
 						ent.setId(Long.valueOf(ent.getMake().hashCode()));
 						return ent;
 					}
@@ -67,12 +66,12 @@ public class CarServiceImplTest {
 		car.setMake(make);
 		car = carService.create(car);
 		assertEquals(make.hashCode(), car.getId().longValue());
-		verify(carDao, Mockito.times(1)).save(any(CarEntity.class));
+		verify(carDao, Mockito.times(1)).save(any(Car.class));
 	}
 
 	@Test
 	public void testGetById() {
-		CarEntity carE = new CarEntity();
+		Car carE = new Car();
 		String make = "bmw";
 		carE.setMake(make);
 		long id = 123L;
@@ -90,27 +89,27 @@ public class CarServiceImplTest {
 		int pageNumber = 0;
 		int pageSize = 10;
 		boolean distinct = false;
-		CarEntity carE = new CarEntity();
+		Car carE = new Car();
 		carE.setMake(make);
 		Mockito.when(pageM.getContent()).thenReturn(Arrays.asList(carE));
-		Mockito.when(carDao.findAll(make, fields, distinct, pageSize, pageNumber)).thenReturn(pageM);
+		//Mockito.when(carDao.findAll()).thenReturn(pageM);
 
-		com.cisco.iot.ccs.model.Page<Car> page = carService.get(make, fields, distinct, pageSize, pageNumber);
+		com.cisco.iot.ccs.model.Page<Car> page = carService.get(pageSize, pageNumber);
 		assertEquals(1, page.getData().size());
 		assertEquals(make, page.getData().get(0).getMake());
-		verify(carDao, Mockito.times(1)).findAll(make, fields, distinct, pageSize, pageNumber);
+		//verify(carDao, Mockito.times(1)).findAll(pageSize, pageNumber);
 	}
 
-	private static class CarArgumentMatchers implements ArgumentMatcher<CarEntity> {
+	private static class CarArgumentMatchers implements ArgumentMatcher<Car> {
 
-		private CarEntity left;
+		private Car left;
 
-		public CarArgumentMatchers(CarEntity left) {
+		public CarArgumentMatchers(Car left) {
 			this.left = left;
 		}
 
 		@Override
-		public boolean matches(CarEntity right) {
+		public boolean matches(Car right) {
 			return EqualsBuilder.reflectionEquals(left, right);
 		}
 	}

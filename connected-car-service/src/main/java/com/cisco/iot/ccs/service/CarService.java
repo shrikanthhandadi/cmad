@@ -9,5 +9,5 @@ public interface CarService {
 
 	Car get(Long id);
 	
-	Page<Car> get(String make, String[] fields, boolean distinct, int pageSize, int pageNumber);
+	Page<Car> get(int pageSize, int pageNumber);
 }

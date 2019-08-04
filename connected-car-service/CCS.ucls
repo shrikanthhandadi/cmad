@@ -49,7 +49,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="com.cisco.iot.ccs.exception.CCSException" project="connected-car-service" 
+  <class id="6" language="java" name="com.cisco.iot.ccs.exception.CcsException" project="connected-car-service" 
     file="/connected-car-service/src/main/java/com/cisco/iot/ccs/exception/CCSException.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="997" y="440"/>    
@@ -59,7 +59,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="com.cisco.iot.ccs.exception.InvalidDataException" project="connected-car-service" 
+  <class id="7" language="java" name="com.cisco.iot.ccs.exception.ValidationException" project="connected-car-service" 
     file="/connected-car-service/src/main/java/com/cisco/iot/ccs/exception/InvalidDataException.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="824" y="604"/>    
@@ -69,7 +69,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="com.cisco.iot.ccs.exception.DataNotFoundException" project="connected-car-service" 
+  <class id="8" language="java" name="com.cisco.iot.ccs.exception.NotFoundException" project="connected-car-service" 
     file="/connected-car-service/src/main/java/com/cisco/iot/ccs/exception/DataNotFoundException.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1118" y="602"/>    

@@ -1,21 +1,19 @@
 package com.cisco.iot.ccs.model;
 
-import java.time.Year;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-import io.swagger.annotations.ApiModel;
-
-@ApiModel
+@Entity
 public class Car {
 
+	@Id
+	@GeneratedValue
 	private Long id;
-	
-	private String make;
-	
-	private String model;
-	
-	private Year year;
 
-	private String regNum;
+	private String make;
+
+	private String model;
 
 	public Long getId() {
 		return id;
@@ -41,28 +39,4 @@ public class Car {
 		this.model = model;
 	}
 
-	public Year getYear() {
-		return year;
-	}
-
-	public void setYear(Year year) {
-		this.year = year;
-	}
-
-	public String getRegNum() {
-		return regNum;
-	}
-
-	public void setRegNum(String regNum) {
-		this.regNum = regNum;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Car [id=").append(id).append(", make=").append(make).append(", model=").append(model)
-				.append(", year=").append(year).append(", regNum=").append(regNum).append("]");
-		return builder.toString();
-	}
-	
 }

@@ -3,13 +3,13 @@ package com.cisco.iot.ccs.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.cisco.iot.ccs.common.BeanUtils;
 import com.cisco.iot.ccs.common.DataUtils;
 import com.cisco.iot.ccs.dao.CarDao;
-import com.cisco.iot.ccs.entity.CarEntity;
-import com.cisco.iot.ccs.exception.DataNotFoundException;
+import com.cisco.iot.ccs.exception.NotFoundException;
 import com.cisco.iot.ccs.model.Car;
 import com.cisco.iot.ccs.model.Page;
 
@@ -21,30 +21,24 @@ public class CarServiceImpl implements CarService {
 
 	@Override
 	public Car create(Car event) {
-		CarEntity entity = BeanUtils.copy(event, CarEntity.class);
+		Car entity = BeanUtils.copy(event, Car.class);
 		entity = carDao.save(entity);
 		return BeanUtils.copy(entity, Car.class);
 	}
 
 	@Override
 	public Car get(Long id) {
-		Optional<CarEntity> optional = carDao.findById(id);
+		Optional<Car> optional = carDao.findById(id);
 		if (!optional.isPresent()) {
-			throw new DataNotFoundException("Unable to find car for id " + id);
+			throw new NotFoundException("Unable to find car for id " + id);
 		}
 		return BeanUtils.copy(optional.get(), Car.class);
 	}
 
 	@Override
-	public Page<Car> get(String make, String[] fields, boolean distinct, int pageSize, int pageNumber) {
-		org.springframework.data.domain.Page<CarEntity> entityPage = null;
-		if (fields == null && make == null) {
-			entityPage = carDao.findAll(pageSize, pageNumber);
-		} else if (fields == null && make != null) {
-			entityPage = carDao.findAll(make, pageSize, pageNumber);
-		} else {
-			entityPage = carDao.findAll(make, fields, distinct, pageSize, pageNumber);
-		}
+	public Page<Car> get(int pageSize, int pageNumber) {
+		org.springframework.data.domain.Page<Car> entityPage = null;
+		entityPage = carDao.findAll(PageRequest.of(pageNumber, pageSize));
 		Page<Car> page = DataUtils.toPageModel(entityPage, Car.class);
 		return page;
 	}

@@ -115,8 +115,6 @@ public class CarControllerPT {
 			Car car = new Car();
 			car.setMake(array[0]);
 			car.setModel(array[1]);
-			car.setYear(Year.of(Short.valueOf(array[2])));
-			car.setRegNum(array[3]);
 			cars.add(car);
 		}
 		return cars;

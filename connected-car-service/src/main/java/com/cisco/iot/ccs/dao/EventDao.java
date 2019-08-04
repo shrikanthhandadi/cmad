@@ -4,33 +4,32 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.cisco.iot.ccs.entity.EventEntity;
-import com.cisco.iot.ccs.entity.Severity;
+import com.cisco.iot.ccs.model.Event;
+import com.cisco.iot.ccs.model.Severity;
 
 @Repository
-public interface EventDao extends JpaRepository<EventEntity, Long> {
+public interface EventDao extends MongoRepository<Event, Long> {
 
-	Page<EventEntity> findByMake(String make, Pageable pageable);
+	Page<Event> findAll(Pageable pageable);
 
-	Page<EventEntity> findByMakeAndModel(String make, String model, Pageable pageable);
+	Page<Event> findByMake(String make, Pageable pageable);
 
-	Page<EventEntity> findAll(int pageSize, int pageNumber);
+	Page<Event> findByMakeAndModel(String make, String model, Pageable pageable);
 
-	Page<EventEntity> findAll(String make, int pageSize, int pageNumber);
-
-	Page<EventEntity> findAll(String make, String model, int pageSize, int pageNumber);
-
-	@Query(value = "select severity, count(1) count from event group by severity", nativeQuery = true)
+	// @Query(value = "select severity, count(1) count from event group by
+	// severity", nativeQuery = true)
+	//@Query("([{'$match' : {'make' : 'BMW'}}, { '$group' : {'_id' : { 'make' : '$make'}, 'COUNT(*)' : {'$sum' : NumberInt(1)}}}, {  '$project' : { 'make' : '$_id.make', 'COUNT(*)' : '$COUNT(*)', '_id' : NumberInt(0)} }],  { 'allowDiskUse' : true });")
+	@Query("{ 'username' : ?0 }")
 	List<Stat> getStats();
 
-	@Query(value = "select severity, count(1) count from event where make = :make group by severity", nativeQuery = true)
+	@Query("{ 'username' : ?0 }")
 	List<Stat> getStats(String make);
 
-	@Query(value = "select severity, count(1) count from event where make = :make and model = :model group by severity", nativeQuery = true)
+	@Query("{ 'username' : ?0 }")
 	List<Stat> getStats(String make, String model);
 
 	interface Stat {
