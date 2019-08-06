@@ -37,16 +37,25 @@ export class EventFilter extends React.Component {
     }
 
     loadMakes() {
-        fetch('http://ccs:9090/ccs/cars?distinct=true&fields=make&pageNum=0&pageSize=1000')
+        fetch('http://localhost:9090/ccs/cars?distinct=true&fields=make&pageNum=0&pageSize=1000', {
+            headers: new Headers({
+                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTE0Mjc4LCJleHAiOjE1NjU5NzgyNzh9.PzAhBQzbl24riKIyzkwz6ss2gsWeTKp8xaZ7iYlDz3sB690hoaAINZU8_p_00LPMBW46mFYqT6S3ELep62EeXQ',
+            })
+        })
             .then(res => res.json())
             .then((data) => {
                 const carMakes = data.data.map(car => ({
                     label: car.make,
                     value: car.make,
                 }));
+                
                 carMakes.unshift({ value: '', label: '' });
+                const uniqCarMakes = Array.from(new Set(carMakes));
+
+                //const uniqCarMakes = carMakes.filter((val,id,array) => array.indexOf(val) == id);
+
                 this.setState({
-                    makes: carMakes
+                    makes: uniqCarMakes
                 });
 
             })
@@ -55,8 +64,11 @@ export class EventFilter extends React.Component {
     }
 
     loadModels(selectedOption) {
-        fetch('http://ccs:9090/ccs/cars?distinct=true&fields=model&make=' + selectedOption.value + '&pageNum=0&pageSize=1000')
-            .then(res => res.json())
+        fetch('http://localhost:9090/ccs/cars?distinct=true&fields=model&make=' + selectedOption.value + '&pageNum=0&pageSize=1000', {
+            headers: new Headers({
+                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTE0Mjc4LCJleHAiOjE1NjU5NzgyNzh9.PzAhBQzbl24riKIyzkwz6ss2gsWeTKp8xaZ7iYlDz3sB690hoaAINZU8_p_00LPMBW46mFYqT6S3ELep62EeXQ',
+            })
+        }).then(res => res.json())
             .then((data) => {
                 const carModels = data.data.map(car => ({
                     label: car.model,

@@ -64,7 +64,8 @@ export class InfiniteEvents extends React.Component {
     loadEvents = () => {
         this.setState({ isLoading: true }, () => {
             request
-                .get('http://ccs:9090/ccs/events?make=' + this.state.make + '&model=' + this.state.model + '&pageSize=' + this.props.pageSize + '&pageNum=' + this.state.pageNumber)
+                .get('http://localhost:9090/ccs/events?make=' + this.state.make + '&model=' + this.state.model + '&pageSize=' + this.props.pageSize + '&pageNum=' + this.state.pageNumber)
+                .set('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTE0Mjc4LCJleHAiOjE1NjU5NzgyNzh9.PzAhBQzbl24riKIyzkwz6ss2gsWeTKp8xaZ7iYlDz3sB690hoaAINZU8_p_00LPMBW46mFYqT6S3ELep62EeXQ')
                 .then((results) => {
                     // Creates a massaged array of event data
                     const nextEvents = results.body.data.map(event => ({
@@ -113,7 +114,7 @@ export class InfiniteEvents extends React.Component {
             //table-striped table-bordered table-hover table-dark
             <div className="container">
                 <div className="row">
-                    <div className="col-md-10 col-lg-10"><h3>Event List</h3></div>
+                    <div className="col-md-10 col-lg-10 "><h3>Event List</h3></div>
                 </div>
                 <div className="row">
                     <div className="col-md-10 col-lg-10">

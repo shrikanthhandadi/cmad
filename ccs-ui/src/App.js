@@ -36,7 +36,7 @@ export default class App extends React.Component {
                     </div>
                     <div className="col-md-10 col-lg-10">
                         <div className="row">
-                            <div className="col-md-10 col-lg-10">
+                            <div className="col-md-10 col-lg-10 " >
                                 <EventFilter updateMakeAndModel={ this.updateMakeAndModel.bind(this) } />
                             </div>
                         </div>
