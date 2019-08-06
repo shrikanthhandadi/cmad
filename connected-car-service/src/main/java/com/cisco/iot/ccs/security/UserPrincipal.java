@@ -2,7 +2,6 @@ package com.cisco.iot.ccs.security;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -41,9 +40,8 @@ public class UserPrincipal implements UserDetails {
 	}
 
 	public static UserPrincipal create(User user) {
-		List<GrantedAuthority> authorities = user.getUserRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getRole().name())).collect(Collectors.toList());
-
+		List<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role))
+				.collect(Collectors.toList());
 		return new UserPrincipal(user.getId(), null, user.getUsername(), null, user.getPassword(), authorities);
 	}
 
@@ -94,19 +92,4 @@ public class UserPrincipal implements UserDetails {
 		return true;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		UserPrincipal that = (UserPrincipal) o;
-		return Objects.equals(id, that.id);
-	}
-
-	@Override
-	public int hashCode() {
-
-		return Objects.hash(id);
-	}
 }

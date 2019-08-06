@@ -4,8 +4,15 @@ WHERE NOT EXISTS (
     SELECT 	1  FROM user WHERE username = 'admin'
 )  ;
 
-INSERT INTO user_role (id,role, user_id)
-SELECT * FROM (SELECT 1,'ROLE_ADMIN' as role, 1 as user_id) AS tmp
+INSERT INTO user_role (user_id,roles)
+SELECT * FROM (SELECT 1,'ROLE_ADMIN' as roles) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_role WHERE user_id = 1
+    SELECT 	1  FROM user_role WHERE user_id = 1 and roles = 'ROLE_ADMIN'
 )  ;
+
+INSERT INTO user_make (user_id,makes)
+SELECT * FROM (SELECT 1,'TATA' as makes) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'TATA'
+)  ;
+

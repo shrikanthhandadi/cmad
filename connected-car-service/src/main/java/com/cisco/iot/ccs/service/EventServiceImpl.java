@@ -1,6 +1,7 @@
 package com.cisco.iot.ccs.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -50,13 +51,6 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public List<Stat> getStats() {
-		List<com.cisco.iot.ccs.dao.EventDao.Stat> stats = eventDao.getStats();
-		List<Stat> statCounts = BeanUtils.copyValues(stats, Stat.class);
-		return statCounts;
-	}
-
-	@Override
 	public List<Stat> getStats(String make) {
 		List<com.cisco.iot.ccs.dao.EventDao.Stat> stats = eventDao.getStats(make);
 		List<Stat> statCounts = BeanUtils.copyValues(stats, Stat.class);
@@ -66,6 +60,22 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public List<Stat> getStats(String make, String model) {
 		List<com.cisco.iot.ccs.dao.EventDao.Stat> stats = eventDao.getStats(make, model);
+		List<Stat> statCounts = BeanUtils.copyValues(stats, Stat.class);
+		return statCounts;
+	}
+
+	@Override
+	public Page<Event> get(Set<String> makes, int pageSize, int pageNumber) {
+		org.springframework.data.domain.Page<Event> events = eventDao.findByMakeIn(makes,
+				PageRequest.of(pageNumber, pageSize));
+
+		Page<Event> page = DataUtils.toPageModel(events, Event.class);
+		return page;
+	}
+
+	@Override
+	public List<Stat> getStats(Set<String> makes) {
+		List<com.cisco.iot.ccs.dao.EventDao.Stat> stats = eventDao.getStats(makes);
 		List<Stat> statCounts = BeanUtils.copyValues(stats, Stat.class);
 		return statCounts;
 	}

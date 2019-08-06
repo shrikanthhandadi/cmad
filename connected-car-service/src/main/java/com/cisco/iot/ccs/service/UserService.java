@@ -9,5 +9,8 @@ public interface UserService {
 
 	User get(Long id);
 
+	User get(String username);
+
 	Page<User> get(int pageSize, int pageNumber);
+	
 }

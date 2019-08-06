@@ -2,18 +2,17 @@ package com.cisco.iot.ccs.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.cisco.iot.ccs.model.Severity;
-
-@Document(collection = "event")
+@Entity
 public class Event {
 
 	@Id
+	@GeneratedValue
 	private Long id;
 
 	private String make;
@@ -21,8 +20,8 @@ public class Event {
 	private String model;
 
 	private Long carId;
-	
-    @Enumerated(EnumType.STRING)
+
+	@Enumerated(EnumType.STRING)
 	private Severity severity;
 
 	private Date date;
@@ -84,5 +83,5 @@ public class Event {
 	public void setSeverity(Severity severity) {
 		this.severity = severity;
 	}
-	
+
 }

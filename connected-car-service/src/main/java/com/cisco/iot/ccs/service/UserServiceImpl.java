@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cisco.iot.ccs.common.BeanUtils;
@@ -19,11 +20,14 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Override
 	public User create(User user) {
-		User entity = BeanUtils.copy(user, User.class);
-		entity = userDao.save(entity);
-		return BeanUtils.copy(entity, User.class);
+		String encodedPass = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodedPass);
+		return userDao.save(user);
 	}
 
 	@Override
@@ -41,6 +45,13 @@ public class UserServiceImpl implements UserService {
 		entityPage = userDao.findAll(PageRequest.of(pageNumber, pageSize));
 		Page<User> page = DataUtils.toPageModel(entityPage, User.class);
 		return page;
+	}
+
+	@Override
+	public User get(String username) {
+		return userDao.findByUsername(username).orElseThrow(() -> {
+			throw new NotFoundException("Unable to find user for username " + username);
+		});
 	}
 
 }

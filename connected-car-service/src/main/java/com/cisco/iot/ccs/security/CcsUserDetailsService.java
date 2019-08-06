@@ -29,6 +29,8 @@ public class CcsUserDetailsService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserById(Long id) {
 		User user = userDao.findById(id).orElseThrow(() -> new NotFoundException("User not found for id: " + id));
+
 		return UserPrincipal.create(user);
 	}
+
 }
