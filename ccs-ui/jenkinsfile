@@ -1,0 +1,60 @@
+pipeline{
+    
+    agent none
+    
+    stages{
+        
+        
+        stage('build'){
+			when { branch "master"}
+		    agent{
+		          docker{
+		            image 'node:8'
+		          }
+
+		    }
+            steps{
+                echo 'Running package CCS app'
+                dir('ccs-ui'){
+					sh 'npm run-script build'
+				}
+            }
+        }
+		
+		stage('docker-package'){
+			when { branch "master"}
+		          agent any
+		          steps{
+		            echo 'Packaging CCS app with docker'
+		            script{
+		              docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
+		                  def ccsImage = docker.build("shrikanthhandadi/ccs:v${env.BUILD_ID}", "./ccs-ui")
+		                  ccsImage.push()
+		                  ccsImage.push("latest")
+		              }
+		            }
+		          }
+		}
+			  
+	  	stage('deploy'){
+			when { branch "master"}
+	  		    agent any
+	  		          steps{
+	  		            script{
+	  		              echo 'Deploy (deliver) docker app'
+						  sh 'docker-compose -f ./ccs-ui/docker-compose.yml up -d'
+	  		            }
+	  		  }
+	  	}
+			  
+			  
+    }
+    
+    post{
+        always{
+            echo 'In the post block of pipeline'
+        }
+        
+    }
+    
+}
