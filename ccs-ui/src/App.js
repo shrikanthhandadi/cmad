@@ -10,7 +10,7 @@ export default class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MjAxNTY1LCJleHAiOjE1NjYwNjU1NjV9.MSc9H4tvd6eTgUEQiAOxNKV1mhdi9EvZBpC5wiDiZdhLQrLuFjrNdSsPtOpm55R8xLYRKUqSYY_ZWE2_2nTaPA',
+            token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NzYiLCJpYXQiOjE1NjUyMDIwNjcsImV4cCI6MTU2NjA2NjA2N30.zAkVJml-VGsLRoJJA416e1EFoo9H4FbxGWX68TnjQfKCMH1eSW9S5rmxA_3-ZpXBw2DDYFS2ktURt6z9X_KoNw',
             make: '',
             model: '',
         }
