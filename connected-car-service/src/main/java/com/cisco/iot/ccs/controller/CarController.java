@@ -75,7 +75,7 @@ public class CarController {
 			@ApiResponse(code = 200, message = "Ok", response = Long.class),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/cars/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<Car> get(@PathVariable("id") Long id) {
 		log.info("Started getting car, id: {}.", id);
 		Car car = null;
@@ -100,7 +100,7 @@ public class CarController {
 			@ApiResponse(code = 200, message = "Ok", response = Car.class, responseContainer = "Page"),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/cars")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<Page<Car>> get(
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
 			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum) {

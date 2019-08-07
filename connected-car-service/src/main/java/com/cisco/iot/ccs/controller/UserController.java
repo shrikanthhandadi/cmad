@@ -1,6 +1,7 @@
 package com.cisco.iot.ccs.controller;
 
 import java.net.URI;
+import java.security.Principal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api("/v1")
 @RestController("/v1/users") // ideally users path should be added here, however swagger doc not working
@@ -57,7 +59,7 @@ public class UserController {
 			@ApiResponse(code = 201, message = "created", response = Long.class),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@PostMapping("/users")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<Long> add(@RequestBody User user) {
 		log.info("Started creating user, data: {}", user);
 		ResponseEntity<Long> response;
@@ -87,7 +89,7 @@ public class UserController {
 			@ApiResponse(code = 200, message = "Ok", response = Long.class),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/users/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<User> get(@PathVariable("id") Long id) {
 		log.info("Started getting user, id: {}.", id);
 		User user = null;
@@ -109,10 +111,11 @@ public class UserController {
 			@ApiResponse(code = 200, message = "Found", response = User.class, responseContainer = "Page"),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/users")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<Page<User>> get(
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum) {
+			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
+			@ApiIgnore Principal principal) {
 		log.info("Started fetching users, pageSize: {}, pageNum {}", pageSize, pageNum);
 		Page<User> page = null;
 		try {

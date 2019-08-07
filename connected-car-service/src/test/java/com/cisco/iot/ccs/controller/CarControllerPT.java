@@ -14,10 +14,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestTemplate;
 
 import com.cisco.iot.ccs.model.Car;
@@ -31,6 +36,19 @@ public class CarControllerPT {
 	private static final int port = 9090;
 
 	final String baseUrl = "http://localhost:" + port + "/ccs";
+
+	@Before
+	public void setUp() {
+		String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTY1MTEwMzc5LCJleHAiOjE1NjUxMTIxNzl9.W6-bdJHmbien0hotzglGM7YF-5hU9-JzQeMUn8nVx33i6q_nlRIfymnXUKOaGPNgmBzc9HctGMCWOL19JYAUSw";
+		restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
+			@Override
+			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+					throws IOException {
+				request.getHeaders().set("Authorization", "Bearer " + token);// Set the header for each request
+				return execution.execute(request, body);
+			}
+		});
+	}
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
@@ -115,6 +133,8 @@ public class CarControllerPT {
 			Car car = new Car();
 			car.setMake(array[0]);
 			car.setModel(array[1]);
+			car.setYear(Year.of(Integer.valueOf(array[2])));
+			car.setRegNum(array[3]);
 			cars.add(car);
 		}
 		return cars;

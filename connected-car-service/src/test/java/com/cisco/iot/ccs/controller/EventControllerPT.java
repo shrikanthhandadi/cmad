@@ -13,12 +13,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestTemplate;
 
 import com.cisco.iot.ccs.model.Car;
@@ -35,10 +40,23 @@ public class EventControllerPT {
 	private static final int port = 9090;
 
 	final String baseUrl = "http://localhost:" + port + "/ccs";
+	
+	@Before
+	public void setUp() {
+		String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTExMjAyLCJleHAiOjE1NjUxMTMwMDJ9.zrNxG7DZOR1LnXxrA3lmYYSYsbdhylnOmEyNpwvAqPY6roDyN_PSoNJ0VX30AYtM_OwJgKugm-G6JN50W1XDcg";
+		restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
+			@Override
+			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+					throws IOException {
+				request.getHeaders().set("Authorization", "Bearer " + token);// Set the header for each request
+				return execution.execute(request, body);
+			}
+		});
+	}
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
-		executeCreate("src/test/resources/event/event.csv", 5, 1, Double.valueOf(1 * 60 * 3).intValue());
+		executeCreate("src/test/resources/event/event.csv", 5, 1, Double.valueOf(1 * 60 * 5).intValue());
 	}
 
 	private void executeCreate(String location, int concurrency, int rampupSeconds, int loop)

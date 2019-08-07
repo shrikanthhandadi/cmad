@@ -33,7 +33,8 @@ export class EventSummary extends React.Component {
     loadStats = () => {
         this.setState({ isLoading: true }, () => {
             request
-                .get('http://ccs:9090/ccs/stats?make=' + this.state.make + '&model=' + this.state.model)
+                .get('http://localhost:9090/ccs/stats?make=' + this.state.make + '&model=' + this.state.model)
+                .set('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTE0Mjc4LCJleHAiOjE1NjU5NzgyNzh9.PzAhBQzbl24riKIyzkwz6ss2gsWeTKp8xaZ7iYlDz3sB690hoaAINZU8_p_00LPMBW46mFYqT6S3ELep62EeXQ')
                 .then((results) => {
                     // Creates a array of array of stats data
                     const eventStats = results.body.map(stat => ([
