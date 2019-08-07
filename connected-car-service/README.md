@@ -7,6 +7,7 @@ docker build -t shrikanthhandadi/ccs:1.0 .
 
 ```
 docker tag shrikanthhandadi/ccs:1.0 shrikanthhandadi/ccs
+
 ```
 
 ```

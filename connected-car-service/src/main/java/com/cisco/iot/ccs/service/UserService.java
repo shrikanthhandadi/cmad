@@ -12,5 +12,8 @@ public interface UserService {
 	User get(String username);
 
 	Page<User> get(int pageSize, int pageNumber);
-	
+
+	boolean delete(Long id);
+
+	User update(Long id, User user);
 }

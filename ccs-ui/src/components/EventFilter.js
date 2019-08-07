@@ -39,23 +39,25 @@ export class EventFilter extends React.Component {
     loadMakes() {
         fetch('http://localhost:9090/ccs/cars?distinct=true&fields=make&pageNum=0&pageSize=1000', {
             headers: new Headers({
-                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTE0Mjc4LCJleHAiOjE1NjU5NzgyNzh9.PzAhBQzbl24riKIyzkwz6ss2gsWeTKp8xaZ7iYlDz3sB690hoaAINZU8_p_00LPMBW46mFYqT6S3ELep62EeXQ',
+                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NzYiLCJpYXQiOjE1NjUxOTMxNjAsImV4cCI6MTU2NjA1NzE2MH0.rlw9v3kTzuZdGPFzR3Omskd6YPqZ0zwP4BCkK_Q-yn70l0PjCE4u7AN85XRbWb3OpJnyT1B29R0JevZq4xMQEQ',
             })
         })
             .then(res => res.json())
             .then((data) => {
-                const carMakes = data.data.map(car => ({
-                    label: car.make,
-                    value: car.make,
+                const allMakes = data.data.map(car => (
+                    car.make
+                ));
+                const uniqMakes = Array.from(new Set(allMakes));
+                const carMakes = uniqMakes.map(make => ({
+                    label: make,
+                    value: make,
                 }));
-                
-                carMakes.unshift({ value: '', label: '' });
-                const uniqCarMakes = Array.from(new Set(carMakes));
 
-                //const uniqCarMakes = carMakes.filter((val,id,array) => array.indexOf(val) == id);
+                //Add blank at top
+                carMakes.unshift({ value: '', label: '' });
 
                 this.setState({
-                    makes: uniqCarMakes
+                    makes: carMakes
                 });
 
             })
@@ -64,15 +66,19 @@ export class EventFilter extends React.Component {
     }
 
     loadModels(selectedOption) {
-        fetch('http://localhost:9090/ccs/cars?distinct=true&fields=model&make=' + selectedOption.value + '&pageNum=0&pageSize=1000', {
+        fetch('http://localhost:9090/ccs/cars?make=' + selectedOption.value + '&pageNum=0&pageSize=1000', {
             headers: new Headers({
-                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTE0Mjc4LCJleHAiOjE1NjU5NzgyNzh9.PzAhBQzbl24riKIyzkwz6ss2gsWeTKp8xaZ7iYlDz3sB690hoaAINZU8_p_00LPMBW46mFYqT6S3ELep62EeXQ',
+                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NzYiLCJpYXQiOjE1NjUxOTMxNjAsImV4cCI6MTU2NjA1NzE2MH0.rlw9v3kTzuZdGPFzR3Omskd6YPqZ0zwP4BCkK_Q-yn70l0PjCE4u7AN85XRbWb3OpJnyT1B29R0JevZq4xMQEQ',
             })
         }).then(res => res.json())
             .then((data) => {
-                const carModels = data.data.map(car => ({
-                    label: car.model,
-                    value: car.model,
+                const allModels= data.data.map(car => (
+                    car.model
+                ));
+                const uniqModels= Array.from(new Set(allModels));
+                const carModels = uniqModels.map(model => ({
+                    label: model,
+                    value: model,
                 }));
 
                 carModels.unshift({ value: '', label: '' });

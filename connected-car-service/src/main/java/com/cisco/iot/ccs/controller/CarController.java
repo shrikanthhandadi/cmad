@@ -1,7 +1,9 @@
 package com.cisco.iot.ccs.controller;
 
 import java.net.URI;
+import java.security.Principal;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.cisco.iot.ccs.exception.ForbiddenException;
 import com.cisco.iot.ccs.exception.NotFoundException;
 import com.cisco.iot.ccs.exception.ValidationException;
 import com.cisco.iot.ccs.model.Car;
 import com.cisco.iot.ccs.model.Page;
+import com.cisco.iot.ccs.model.User;
 import com.cisco.iot.ccs.service.CarService;
+import com.cisco.iot.ccs.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api("/v1")
 @RestController("/v1/cars") // ideally cars path should be added here, however swagger doc not working
@@ -39,6 +45,9 @@ public class CarController {
 
 	@Autowired
 	private CarService carService;
+
+	@Autowired
+	private UserService userService;
 
 	@ApiOperation(value = "Create car", notes = "Create")
 	@ApiResponses(value = { @ApiResponse(code = 400, message = "Bad request"),
@@ -101,21 +110,34 @@ public class CarController {
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/cars")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	public ResponseEntity<Page<Car>> get(
+	public ResponseEntity<Page<Car>> get(@ApiIgnore Principal principal,
+			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make,
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
 			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum) {
 		log.info("Started fetching cars, pageSize: {}, pageNum {}", pageSize, pageNum);
 		Page<Car> page = null;
 		try {
-			page = carService.get(pageSize, pageNum);
+			User user = userService.get(principal.getName());
+			if (!StringUtils.isBlank(make)) {
+				if (!user.getMakes().contains(make)) {
+					throw new ForbiddenException(
+							"Not allowed to access make: " + make + " Allowed makes are: " + user.getMakes());
+				}
+				page = carService.get(make, pageSize, pageNum);
+			} else {
+				page = carService.get(user.getMakes(), pageSize, pageNum);
+			}
 			log.info("Finished fetching cars with total: {}", page.getData().size());
-			return new ResponseEntity<Page<Car>>(page, HttpStatus.OK);
+			return new ResponseEntity<>(page, HttpStatus.OK);
 		} catch (ValidationException e) {
 			log.error("Exception while fetching car", e);
-			return new ResponseEntity<Page<Car>>(page, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(page, HttpStatus.BAD_REQUEST);
+		} catch (ForbiddenException e) {
+			log.error("Exception while fetching events", e);
+			return new ResponseEntity<>(page, HttpStatus.FORBIDDEN);
 		} catch (Exception e) {
 			log.error("Exception while fetching car", e);
-			return new ResponseEntity<Page<Car>>(page, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(page, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

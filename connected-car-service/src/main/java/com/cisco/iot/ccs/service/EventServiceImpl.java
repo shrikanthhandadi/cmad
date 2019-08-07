@@ -28,23 +28,8 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Page<Event> get(int pageSize, int pageNumber) {
-		org.springframework.data.domain.Page<Event> entityPage = eventDao.findAll(PageRequest.of(pageNumber, pageSize));
-		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
-		return page;
-	}
-
-	@Override
 	public Page<Event> get(String make, int pageSize, int pageNumber) {
 		org.springframework.data.domain.Page<Event> entityPage = eventDao.findByMake(make,
-				PageRequest.of(pageNumber, pageSize));
-		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
-		return page;
-	}
-
-	@Override
-	public Page<Event> get(String make, String model, int pageSize, int pageNumber) {
-		org.springframework.data.domain.Page<Event> entityPage = eventDao.findByMakeAndModel(make, model,
 				PageRequest.of(pageNumber, pageSize));
 		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
 		return page;
@@ -78,6 +63,14 @@ public class EventServiceImpl implements EventService {
 		List<com.cisco.iot.ccs.dao.EventDao.Stat> stats = eventDao.getStats(makes);
 		List<Stat> statCounts = BeanUtils.copyValues(stats, Stat.class);
 		return statCounts;
+	}
+
+	@Override
+	public Page<Event> get(String make, String model, int pageSize, int pageNum) {
+		org.springframework.data.domain.Page<Event> entityPage = eventDao.findByMakeAndModel(make, model,
+				PageRequest.of(pageNum, pageSize));
+		Page<Event> page = DataUtils.toPageModel(entityPage, Event.class);
+		return page;
 	}
 
 }

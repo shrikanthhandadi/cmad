@@ -15,9 +15,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -153,6 +155,54 @@ public class UserController {
 		} catch (Exception e) {
 			log.error("Exception while login user", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@ApiOperation(value = "Update user", notes = "Update")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 200, message = "Ok", response = Long.class),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	@PutMapping("/users/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody User user) {
+		log.info("Started updating user, id: {}.", id);
+		try {
+			user = userService.update(id, user);
+			log.info("Finished updating user.");
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		} catch (NotFoundException e) {
+			log.error("Exception while updating user", e);
+			return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+		} catch (ValidationException e) {
+			log.error("Exception while updating user", e);
+			return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			log.error("Exception while updating user", e);
+			return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@ApiOperation(value = "Delete user", notes = "Delete")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 200, message = "Ok", response = Long.class),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	@DeleteMapping("/users/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	public ResponseEntity<Boolean> delete(@PathVariable("id") Long id) {
+		log.info("Started getting user, id: {}.", id);
+		boolean result = false;
+		try {
+			result = userService.delete(id);
+			log.info("Finished getting user.");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (ValidationException e) {
+			log.error("Exception while getting user", e);
+			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			log.error("Exception while getting user", e);
+			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

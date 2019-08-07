@@ -77,7 +77,8 @@ public class EventController {
 	public ResponseEntity<Page<Event>> get(@ApiIgnore Principal principal,
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
 			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make) {
+			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make,
+			@ApiParam("Model of car") @RequestParam(name = "model", required = false) String model) {
 		log.info("Started fetching events, pageSize: {}, pageNum {}, make {}", pageSize, pageNum, make);
 		Page<Event> page = null;
 		try {
@@ -87,7 +88,11 @@ public class EventController {
 					throw new ForbiddenException(
 							"Not allowed to access make: " + make + " Allowed makes are: " + user.getMakes());
 				}
-				page = eventService.get(make, pageSize, pageNum);
+				if (model != null) {
+					page = eventService.get(make, model, pageSize, pageNum);
+				} else {
+					page = eventService.get(make, pageSize, pageNum);
+				}
 			} else {
 				page = eventService.get(user.getMakes(), pageSize, pageNum);
 			}

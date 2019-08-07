@@ -65,7 +65,7 @@ export class InfiniteEvents extends React.Component {
         this.setState({ isLoading: true }, () => {
             request
                 .get('http://localhost:9090/ccs/events?make=' + this.state.make + '&model=' + this.state.model + '&pageSize=' + this.props.pageSize + '&pageNum=' + this.state.pageNumber)
-                .set('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTE0Mjc4LCJleHAiOjE1NjU5NzgyNzh9.PzAhBQzbl24riKIyzkwz6ss2gsWeTKp8xaZ7iYlDz3sB690hoaAINZU8_p_00LPMBW46mFYqT6S3ELep62EeXQ')
+                .set('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NzYiLCJpYXQiOjE1NjUxOTMxNjAsImV4cCI6MTU2NjA1NzE2MH0.rlw9v3kTzuZdGPFzR3Omskd6YPqZ0zwP4BCkK_Q-yn70l0PjCE4u7AN85XRbWb3OpJnyT1B29R0JevZq4xMQEQ')
                 .then((results) => {
                     // Creates a massaged array of event data
                     const nextEvents = results.body.data.map(event => ({

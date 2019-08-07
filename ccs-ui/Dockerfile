@@ -2,7 +2,8 @@
 FROM node:8 as react-build
 WORKDIR /app
 COPY . ./
-#RUN npm
+#RUN npm build
+RUN npm install
 RUN npm run-script build
 
 # Stage 2 - the production environment
