@@ -6,6 +6,7 @@ export class EventFilter extends React.Component {
     constructor(props) {
         super();
         this.state = {
+            token: props.token,
             makes: [],
             models: [],
             selectedMake: ''
@@ -36,10 +37,21 @@ export class EventFilter extends React.Component {
         this.loadMakes();
     }
 
+     //when component receives new props
+     componentWillReceiveProps(nextProps) {
+        this.setState({
+            make: nextProps.make,
+            model: nextProps.model,
+            token: nextProps.token,
+            stats: []
+        });
+        this.loadMakes();
+    }
+
     loadMakes() {
         fetch('http://localhost:9090/ccs/cars?distinct=true&fields=make&pageNum=0&pageSize=1000', {
             headers: new Headers({
-                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NzYiLCJpYXQiOjE1NjUxOTMxNjAsImV4cCI6MTU2NjA1NzE2MH0.rlw9v3kTzuZdGPFzR3Omskd6YPqZ0zwP4BCkK_Q-yn70l0PjCE4u7AN85XRbWb3OpJnyT1B29R0JevZq4xMQEQ',
+                'Authorization': this.state.token,
             })
         })
             .then(res => res.json())
@@ -68,7 +80,7 @@ export class EventFilter extends React.Component {
     loadModels(selectedOption) {
         fetch('http://localhost:9090/ccs/cars?make=' + selectedOption.value + '&pageNum=0&pageSize=1000', {
             headers: new Headers({
-                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NzYiLCJpYXQiOjE1NjUxOTMxNjAsImV4cCI6MTU2NjA1NzE2MH0.rlw9v3kTzuZdGPFzR3Omskd6YPqZ0zwP4BCkK_Q-yn70l0PjCE4u7AN85XRbWb3OpJnyT1B29R0JevZq4xMQEQ',
+                'Authorization': this.state.token,
             })
         }).then(res => res.json())
             .then((data) => {
@@ -98,5 +110,6 @@ export class EventFilter extends React.Component {
 }
 
 EventFilter.propTypes = {
-    updateMakeAndModel: PropTypes.func
+    updateMakeAndModel: PropTypes.func,
+    token: PropTypes.string
 }

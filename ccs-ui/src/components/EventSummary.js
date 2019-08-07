@@ -10,6 +10,7 @@ export class EventSummary extends React.Component {
 
         // Sets up our initial state
         this.state = {
+            token: props.token,
             make: props.make,
             model: props.model,
             stats: []
@@ -34,7 +35,7 @@ export class EventSummary extends React.Component {
         this.setState({ isLoading: true }, () => {
             request
                 .get('http://localhost:9090/ccs/stats?make=' + this.state.make + '&model=' + this.state.model)
-                .set('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NzYiLCJpYXQiOjE1NjUxOTMxNjAsImV4cCI6MTU2NjA1NzE2MH0.rlw9v3kTzuZdGPFzR3Omskd6YPqZ0zwP4BCkK_Q-yn70l0PjCE4u7AN85XRbWb3OpJnyT1B29R0JevZq4xMQEQ')
+                .set('Authorization', this.state.token)
                 .then((results) => {
                     // Creates a array of array of stats data
                     const eventStats = results.body.map(stat => ([

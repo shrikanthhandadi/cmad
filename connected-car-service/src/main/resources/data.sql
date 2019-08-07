@@ -25,24 +25,24 @@ WHERE NOT EXISTS (
 INSERT INTO user_role (user_id,roles)
 SELECT * FROM (SELECT 2,'ROLE_USER' as roles) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_role WHERE user_id = 1 and roles = 'ROLE_USER'
+    SELECT 	1  FROM user_role WHERE user_id = 2 and roles = 'ROLE_USER'
 )  ;
 
 INSERT INTO user_make (user_id,makes)
 SELECT * FROM (SELECT 2,'BMW' as makes) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'BMW'
+    SELECT 	1  FROM user_make WHERE user_id = 2 and makes = 'BMW'
 )  ;
 
 INSERT INTO user_make (user_id,makes)
 SELECT * FROM (SELECT 2,'Audi' as makes) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'Audi'
+    SELECT 	1  FROM user_make WHERE user_id = 2 and makes = 'Audi'
 )  ;
 
 INSERT INTO user_make (user_id,makes)
 SELECT * FROM (SELECT 2,'Hyundai' as makes) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'Hyundai'
+    SELECT 	1  FROM user_make WHERE user_id = 2 and makes = 'Hyundai'
 )  ;
 
