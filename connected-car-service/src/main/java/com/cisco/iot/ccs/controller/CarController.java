@@ -125,7 +125,11 @@ public class CarController {
 				}
 				page = carService.get(make, pageSize, pageNum);
 			} else {
-				page = carService.get(user.getMakes(), pageSize, pageNum);
+				if (user.getRoles().contains("ROLE_ADMIN")) {
+					page = carService.get(pageSize, pageNum);
+				} else {
+					page = carService.get(user.getMakes(), pageSize, pageNum);
+				}
 			}
 			log.info("Finished fetching cars with total: {}", page.getData().size());
 			return new ResponseEntity<>(page, HttpStatus.OK);

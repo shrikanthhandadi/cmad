@@ -6,10 +6,10 @@ export class EventFilter extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            token: props.token,
             makes: [],
             models: [],
-            selectedMake: ''
+            selectedMake: '',
+            token: props.token
         }
     }
 
@@ -39,17 +39,15 @@ export class EventFilter extends React.Component {
 
      //when component receives new props
      componentWillReceiveProps(nextProps) {
+         console.log('Props receive ',nextProps);
         this.setState({
-            make: nextProps.make,
-            model: nextProps.model,
             token: nextProps.token,
-            stats: []
         });
         this.loadMakes();
     }
 
     loadMakes() {
-        fetch('http://localhost:9090/ccs/cars?distinct=true&fields=make&pageNum=0&pageSize=1000', {
+        fetch('http://localhost:9090/ccs/cars?pageNum=0&pageSize=1000', {
             headers: new Headers({
                 'Authorization': this.state.token,
             })

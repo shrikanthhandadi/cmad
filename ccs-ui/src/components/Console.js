@@ -1,16 +1,16 @@
 import React from "react";
-import { Header } from "./components/Header";
-import { LeftMenu } from "./components/LeftMenu";
-import { EventFilter } from "./components/EventFilter";
-import { InfiniteEvents } from "./components/InfiniteEvents";
-import { EventSummary } from "./components/EventSummary";
-import { Login } from "./components/Login";
+import { Header } from "./Header";
+import { LeftMenu } from "./LeftMenu";
+import { EventFilter } from "./EventFilter";
+import { InfiniteEvents } from "./InfiniteEvents";
+import { EventSummary } from "./EventSummary";
+import { Login } from "./Login";
 
-export default class App extends React.Component {
+export default class Console extends React.Component {
     constructor() {
         super();
         this.state = {
-            token: '',
+            token: 'Bearer '+ JSON.parse(localStorage.getItem('token')),
             make: '',
             model: '',
         }
@@ -20,13 +20,6 @@ export default class App extends React.Component {
         this.setState({
             make: make,
             model: model,
-        });
-    }
-
-    updateToken(token) {
-        console.log('Token update '+token);
-        this.setState({
-            token: 'Bearer '+token,
         });
     }
 
@@ -43,11 +36,7 @@ export default class App extends React.Component {
                         <LeftMenu />
                     </div>
                     <div className="col-md-10 col-lg-10">
-                        <div className="row">
-                            <div className="col-md-10 col-lg-10 " >
-                                <Login updateToken={ this.updateToken.bind(this) } />
-                            </div>
-                        </div>
+                
                         <div className="row">
                             <div className="col-md-10 col-lg-10 " >
                                 <EventFilter updateMakeAndModel={ this.updateMakeAndModel.bind(this) } token={ this.state.token } />

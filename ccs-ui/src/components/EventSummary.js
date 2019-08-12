@@ -26,6 +26,7 @@ export class EventSummary extends React.Component {
         this.setState({
             make: nextProps.make,
             model: nextProps.model,
+            token: nextProps.token,
             stats: []
         });
         this.loadStats();
