@@ -4,16 +4,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
-import { fetchUsers } from './actions/userActions';
 import store from './store/store';
-import Admin from './components/Admin';
+import App from './components/App';
 
 
 //store.dispatch(fetchUsers());
 
 ReactDOM.render(
     <Provider store={ store }>
-        <Admin store={ store } />
+        <App store={ store } />
     </Provider>,
     document.getElementById('root')
 );

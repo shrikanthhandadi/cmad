@@ -1,51 +1,31 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  border-radius: 10px;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  padding-left: 150px;
-  padding-right: 150px;
-  box-shadow: 0px 0px 10px gray;
-`;
-
-const Title = styled.div`
-   font-size: 1.5em;
-`;
-
-const Button = styled.button`
-   padding: 5px;
-   background-color: black;
-   color: white;
-   border: none;
-`;
-
 
 const UserLoginComponent = (props) => (
-   <Wrapper>
-      <Title>User Login</Title>
-      <table>
-         <tbody>
-            <tr>
-               <td>Username</td>
-               <td><input value={ props.username } onChange={ props.onUsername } placeholder='Username' /></td>
-            </tr>
-            <tr>
-               <td>Password</td>
-               <td><input type='password' value={ props.password } onChange={ props.onPassword } placeholder='Password' /></td>
-            </tr>
-
-            <tr>
-               <td colSpan='2' align='right'><Button onClick={ props.onLogin }>Login</Button></td>
-            </tr>
-         </tbody>
-      </table>
-   </Wrapper>
+   <div className="container  border border-dark" >
+      <div className="row">
+         <div className="col-md-10 col-lg-10 " >
+            <form>
+               <div className="form-group row">
+                  <label className="col-sm-2 col-form-label">Username</label>
+                  <div className="col-sm-10">
+                     <input type="text" className="form-control-plaintext" onChange={ props.onUsername } placeholder='Username' />
+                  </div>
+               </div>
+               <div className="form-group row">
+                  <label className="col-sm-2 col-form-label">Password</label>
+                  <div className="col-sm-10">
+                     <input type='password' className="form-control" onChange={ props.onPassword } placeholder='Password' />
+                  </div>
+               </div>
+               <div className="form-group row">
+                  <label className="col-sm-2 col-form-label">Password</label>
+                  <div className="col-sm-10">
+                     <button onClick={ props.onLogin } className="btn btn-primary">Login</button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
 );
 export default UserLoginComponent;

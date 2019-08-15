@@ -46,8 +46,8 @@ const AdminComponent = () => (
          <Switch>
             <Route path='/login' component={ UserLogin } />
             <Route path='/form' component={ UserForm } />
-            <Route path='/list' component={ UserList } />}/>    
-            <Route path='/console' component={ Console } />}/> 
+            <Route path='/list' component={ UserList } />  
+            <Route path='/console' component={ Console } />
          </Switch>
       </AdminWrapper>
    </Router>
