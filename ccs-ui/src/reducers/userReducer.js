@@ -1,8 +1,8 @@
 import ACTION from '../actions/actionTypes';
-import { stat } from 'fs';
 
 const INITIAL_STATE = {
     users: [],
+    user: undefined,
     pending: false,
     error: undefined
 };
@@ -24,7 +24,6 @@ function userReducer(state = INITIAL_STATE, action) {
                 pending: false,
                 error: undefined
             }
-            console.log("USER_FETCHALL_SUCCESS", state);
             break;
         case ACTION.USER_FETCHALL_FAILED:
             state = {
@@ -51,6 +50,31 @@ function userReducer(state = INITIAL_STATE, action) {
             }
             break;
         case ACTION.USER_ADD_FAILED:
+            state = {
+                ...state,
+                error: action.error,
+                pending: false
+            }
+            break;
+
+
+        case ACTION.USER_LOAD_PENDING:
+            state = {
+                ...state,
+                pending: true,
+                error: undefined
+            }
+            break;
+        case ACTION.USER_LOAD_SUCCESS:
+            state = {
+                ...state,
+                user: action.user,
+                pending: false,
+                error: undefined
+            }
+            localStorage.setItem('user', JSON.stringify(action.user));
+            break;
+        case ACTION.USER_LOAD_FAILED:
             state = {
                 ...state,
                 error: action.error,
@@ -97,6 +121,7 @@ function userReducer(state = INITIAL_STATE, action) {
                 pending: false,
                 error: undefined
             }
+            localStorage.setItem('token', JSON.stringify(action.token));
             break;
         case ACTION.USER_LOGIN_FAILED:
             state = {
@@ -108,8 +133,9 @@ function userReducer(state = INITIAL_STATE, action) {
 
 
         default:
-            console.log("Unmapped reducer action: ", action.type);
-            break;
+            if (action.type.startsWith("user")) {
+                console.log("Unmapped reducer action type: ", action.type);
+            }
     }
     return state;
 }
