@@ -6,7 +6,7 @@ pipeline{
         stage('build'){
 		    agent{
 		          docker{
-		            image 'gradle:5.5.0-jdk8'
+		            image 'gradle:5.5.1-jdk11'
 		            //args '-v $HOME/.gradle:/home/gradle/.gradle'
 		          }
 
@@ -21,7 +21,7 @@ pipeline{
         stage('test'){
 		    agent{
 		          docker{
-		            image 'gradle:5.5.0-jdk8'
+		            image 'gradle:5.5.1-jdk11'
 		          }
 
 		    }
@@ -36,7 +36,7 @@ pipeline{
 			when { branch "master"}
 		    agent{
 		          docker{
-		            image 'gradle:5.5.0-jdk8'
+		            image 'gradle:5.5.1-jdk11'
 		          }
 
 		    }
