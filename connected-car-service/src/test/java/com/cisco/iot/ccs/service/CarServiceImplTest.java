@@ -91,7 +91,7 @@ public class CarServiceImplTest {
 		boolean distinct = false;
 		Car carE = new Car();
 		carE.setMake(make);
-		Mockito.when(pageM.getContent()).thenReturn(Arrays.asList(carE));
+		//Mockito.when(pageM.getContent()).thenReturn(Arrays.asList(carE));
 		//Mockito.when(carDao.findAll()).thenReturn(pageM);
 
 		//com.cisco.iot.ccs.model.Page<Car> page = carService.get(pageSize, pageNumber);
