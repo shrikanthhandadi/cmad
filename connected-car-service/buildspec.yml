@@ -1,9 +1,13 @@
 version: 0.2
  
-phases: 
-  install: 
+phases:  
+  install:  
+    runtime-versions: 
+       java: openjdk11 
+  pre_build:  
     commands:
       - cd /connected-car-service
+      - pwd
   build: 
     commands: 
       - echo Build started on `date` 
