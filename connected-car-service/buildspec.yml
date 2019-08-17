@@ -2,29 +2,21 @@ version: 0.2
  
 phases: 
   install: 
-    runtime-versions: 
-      java: openjdk8 
-  pre_build: 
-    commands: 
-      - echo Just listing basic information about the environment 
-      - which mvn 
-      - mvn -version 
-      - pwd 
+    commands:
+      - cd /connected-car-service
   build: 
     commands: 
       - echo Build started on `date` 
-      - mvn package 
+      - gradle build
   post_build: 
     commands: 
       - echo Build completed on `date` 
       - echo Working on creating the tar ball with the WAR and AppSpec file for CodeDeploy 
-      - mkdir appfiles 
-      - cd appfiles 
-      - cp ../target/CCSNew-1.war . 
+      - mkdir apps
+      - cd apps
+      - cp ../target/ccs.jar . 
+      - tar -zcvf ../target/ccs.tar.gz *.* 
       - cp ../appspec.yml . 
-      - ls -al 
-      - tar -zcvf ../target/CCSNew.tar.gz *.* 
-      - cd .. 
 artifacts: 
   files: 
 # IMPORTANT 
@@ -32,6 +24,6 @@ artifacts:
 #    - target/HelloWorld.tar.gz 
 # Use the individual files if you are using the CodeDeploy from CodePipeline 
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
-    - appfiles/appspec.yml 
-    - appfiles/CCSNew-1.war 
+    - app/appspec.yml 
+    - build/*.* 
   discard-paths: yes 
