@@ -17,8 +17,8 @@ phases:
       - echo Working on creating the tar ball with the WAR and AppSpec file for CodeDeploy 
       - mkdir apps
       - cd apps
-      - cp ../target/ccs.jar . 
-      - tar -zcvf ../target/ccs.tar.gz *.* 
+      - cp ../target/ccs1.jar . 
+      - tar -zcvf ../target/ccs1.tar.gz *.* 
       - cp ../appspec.yml . 
 artifacts: 
   files: 
