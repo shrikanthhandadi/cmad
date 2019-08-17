@@ -10,18 +10,18 @@ phases:
   build: 
     commands: 
       - echo Build started on `date` 
-      - gradle build
+      - gradle clean bootWar
   post_build: 
     commands: 
       - echo Build completed on `date` 
       - echo Working on creating the tar ball with the WAR and AppSpec file for CodeDeploy 
-      - ls target
+      - ls build
       - mkdir apps
       - cd apps
       - pwd
-      - cp ../target/ccs1.war . 
-      - tar -zcvf ../target/ccs1.war.gz *.* 
-      - cp ../appspec.yml . 
+      - cp ../build/libs/connected-car-service.war ccs.war 
+      - cp ../appspec.yml .
+      - tar -zcvf ../build/ccs.war.gz *.* 
 artifacts: 
   files: 
 # IMPORTANT 
@@ -30,5 +30,5 @@ artifacts:
 # Use the individual files if you are using the CodeDeploy from CodePipeline 
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
     - apps/appspec.yml 
-    - apps/ccs1.war
+    - apps/ccs.war
   discard-paths: yes 
