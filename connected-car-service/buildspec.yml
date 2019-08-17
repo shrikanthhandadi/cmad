@@ -6,7 +6,6 @@ phases:
        java: openjdk11 
   pre_build:  
     commands:
-      - cd /connected-car-service
       - pwd
   build: 
     commands: 
