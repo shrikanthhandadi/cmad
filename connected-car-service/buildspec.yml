@@ -7,10 +7,13 @@ phases:
   pre_build:  
     commands:
       - pwd
+      - cd connected-car-service
+      - chmod 777 gradlew 
+      - which gradle
   build: 
     commands: 
       - echo Build started on `date` 
-      - gradle clean bootWar
+      - ./gradlew clean bootWar
   post_build: 
     commands: 
       - echo Build completed on `date` 
