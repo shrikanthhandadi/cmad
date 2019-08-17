@@ -1,5 +1,15 @@
 package com.cisco.iot.ccs.controller;
 
+import static com.cisco.iot.ccs.model.ErrorResponse.code;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
+
+import java.net.URI;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -53,18 +63,23 @@ public class EventController {
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@PostMapping("/events")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<Long> add(@ApiIgnore Principal principal, @RequestBody Event event) {
+	public ResponseEntity<?> add(@ApiIgnore Principal principal, @RequestBody Event event) {
 		log.info("Started creating event: {}", event);
 		try {
 			event = eventService.create(event);
 			log.info("Finished creating event");
-			return new ResponseEntity<Long>(event.getId(), HttpStatus.CREATED);
+			Long id = event.getId();
+			URI uri = fromCurrentRequestUri().path("/{id}").buildAndExpand(id).toUri();
+			HttpHeaders headers = new HttpHeaders();
+			headers.setLocation(uri);
+			log.info("Finished creating event");
+			return status(CREATED).headers(headers).body(id);
 		} catch (ValidationException e) {
 			log.error("Exception while creating event", e);
-			return new ResponseEntity<Long>(event.getId(), HttpStatus.BAD_REQUEST);
+			return status(BAD_REQUEST).body(code(99999).message(e.getMessage()));
 		} catch (Exception e) {
 			log.error("Exception while creating event", e);
-			return new ResponseEntity<Long>(event.getId(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return status(INTERNAL_SERVER_ERROR).body(code(99999).message(e.getMessage()));
 		}
 	}
 
@@ -74,14 +89,14 @@ public class EventController {
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/events")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<Page<Event>> get(@ApiIgnore Principal principal,
+	public ResponseEntity<?> get(@ApiIgnore Principal principal,
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
 			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
 			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make,
 			@ApiParam("Model of car") @RequestParam(name = "model", required = false) String model) {
 		log.info("Started fetching events, pageSize: {}, pageNum {}, make {}", pageSize, pageNum, make);
-		Page<Event> page = null;
 		try {
+			Page<Event> page = null;
 			User user = userService.get(principal.getName());
 			if (!StringUtils.isBlank(make)) {
 				if (!user.getMakes().contains(make)) {
@@ -97,32 +112,32 @@ public class EventController {
 				page = eventService.get(user.getMakes(), pageSize, pageNum);
 			}
 			log.info("Finished fetching events with total: {}", page.getData().size());
-			return new ResponseEntity<Page<Event>>(page, HttpStatus.OK);
+			return ok(page);
 		} catch (ValidationException e) {
 			log.error("Exception while fetching events", e);
-			return new ResponseEntity<Page<Event>>(page, HttpStatus.BAD_REQUEST);
+			return status(BAD_REQUEST).body(code(99999).message(e.getMessage()));
 		} catch (ForbiddenException e) {
 			log.error("Exception while fetching events", e);
-			return new ResponseEntity<Page<Event>>(page, HttpStatus.FORBIDDEN);
+			return status(FORBIDDEN).body(code(99999).message(e.getMessage()));
 		} catch (Exception e) {
 			log.error("Exception while fetching events", e);
-			return new ResponseEntity<Page<Event>>(page, HttpStatus.INTERNAL_SERVER_ERROR);
+			return status(INTERNAL_SERVER_ERROR).body(code(99999).message(e.getMessage()));
 		}
 	}
 
 	@ApiOperation(value = "Get severity stats", notes = "get stats")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
 			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 200, message = "Found", response = Event.class, responseContainer = "List"),
+			@ApiResponse(code = 200, message = "Found", response = Stat.class, responseContainer = "List"),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/stats")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<List<Stat>> getStats(@ApiIgnore Principal principal,
+	public ResponseEntity<?> getStats(@ApiIgnore Principal principal,
 			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make,
 			@ApiParam("Model of car") @RequestParam(name = "model", required = false) String model) {
-		log.info("Started stats for: make {}, model {}", make,model);
-		List<Stat> stats = new ArrayList<>();
+		log.info("Started stats for: make {}, model {}", make, model);
 		try {
+			List<Stat> stats = new ArrayList<>();
 			User user = userService.get(principal.getName());
 			if (StringUtils.isNotBlank(make)) {
 				if (!user.getMakes().contains(make)) {
@@ -138,13 +153,13 @@ public class EventController {
 				stats = eventService.getStats(user.getMakes());
 			}
 			log.info("Finished fetching stats with total: {}", stats.size());
-			return new ResponseEntity<>(stats, HttpStatus.OK);
+			return ResponseEntity.ok(stats);
 		} catch (ValidationException e) {
 			log.error("Validation exception while fetching events", e);
-			return new ResponseEntity<>(stats, HttpStatus.BAD_REQUEST);
+			return status(BAD_REQUEST).body(code(99999).message(e.getMessage()));
 		} catch (Exception e) {
 			log.error("Exception while fetching events", e);
-			return new ResponseEntity<>(stats, HttpStatus.INTERNAL_SERVER_ERROR);
+			return status(INTERNAL_SERVER_ERROR).body(code(99999).message(e.getMessage()));
 		}
 	}
 

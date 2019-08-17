@@ -1,4 +1,4 @@
-import { jwtToken } from './authHelper';
+import { getJwtToken } from './authHelper';
 import ACTION from "./actionTypes";
 
 const APIURL = "http://localhost:9090/ccs";
@@ -11,7 +11,7 @@ export function fetchMakes() {
     return fetch(APIURL + '/cars?pageNum=0&pageSize=1000', {
       headers: {
         'Accept': 'application/json',
-        'Authorization': jwtToken()
+        'Authorization': getJwtToken()
       },
     })
       .then(response => response.json().then(body => ({ response, body })))
@@ -42,7 +42,7 @@ export function fetchModels(make) {
     dispatch({
       type: ACTION.CAR_FETCH_MODELS_PENDING
     });
-    if(make.trim() == ""){
+    if(make.trim() === ""){
       dispatch({
         type: ACTION.CAR_FETCH_MODELS_SUCCESS,
         models: [],
@@ -53,7 +53,7 @@ export function fetchModels(make) {
     return fetch(APIURL + '/cars?make=' + make + '&pageNum=0&pageSize=1000', {
       headers: {
         'Accept': 'application/json',
-        'Authorization': jwtToken()
+        'Authorization': getJwtToken()
       },
     })
       .then(response => response.json().then(body => ({ response, body })))

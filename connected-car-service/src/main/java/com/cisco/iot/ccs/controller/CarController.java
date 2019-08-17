@@ -1,5 +1,14 @@
 package com.cisco.iot.ccs.controller;
 
+import static com.cisco.iot.ccs.model.ErrorResponse.code;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
+
 import java.net.URI;
 import java.security.Principal;
 
@@ -8,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -55,52 +63,49 @@ public class CarController {
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@PostMapping("/cars")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Long> add(@RequestBody Car car) {
+	public ResponseEntity<?> add(@RequestBody Car car) {
 		log.info("Started creating car, data: {}", car);
-		ResponseEntity<Long> response;
-		Long id = null;
 		try {
 			car = carService.create(car);
 			log.info("Finished creating car");
-			id = car.getId();
+			Long id = car.getId();
 			URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(id).toUri();
 			HttpHeaders headers = new HttpHeaders();
 			headers.setLocation(uri);
-			response = new ResponseEntity<Long>(id, headers, HttpStatus.CREATED);
 			log.info("Finished creating car");
-			return response;
+			return status(CREATED).headers(headers).body(id);
 		} catch (ValidationException e) {
 			log.error("Exception while creating car", e);
-			return new ResponseEntity<Long>(id, HttpStatus.BAD_REQUEST);
+			return status(BAD_REQUEST).body(code(99999).message(e.getMessage()));
 		} catch (Exception e) {
 			log.error("Exception while creating car", e);
-			return new ResponseEntity<Long>(id, HttpStatus.INTERNAL_SERVER_ERROR);
+			return status(INTERNAL_SERVER_ERROR).body(code(99999).message(e.getMessage()));
 		}
 	}
 
 	@ApiOperation(value = "Get car", notes = "Get")
 	@ApiResponses(value = { @ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 404, message = "Not found"),
-			@ApiResponse(code = 200, message = "Ok", response = Long.class),
+			@ApiResponse(code = 404, message = "Not found"), @ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 200, message = "Ok", response = Car.class),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/cars/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	public ResponseEntity<Car> get(@PathVariable("id") Long id) {
+	public ResponseEntity<?> get(@PathVariable("id") Long id) {
 		log.info("Started getting car, id: {}.", id);
 		Car car = null;
 		try {
 			car = carService.get(id);
 			log.info("Finished getting car.");
-			return new ResponseEntity<Car>(car, HttpStatus.OK);
+			return ok().body(car);
 		} catch (NotFoundException e) {
 			log.error("Exception while getting car", e);
-			return new ResponseEntity<Car>(car, HttpStatus.NOT_FOUND);
+			return status(NOT_FOUND).body(code(99999).message(e.getMessage()));
 		} catch (ValidationException e) {
 			log.error("Exception while getting car", e);
-			return new ResponseEntity<Car>(car, HttpStatus.BAD_REQUEST);
+			return status(BAD_REQUEST).body(code(99999).message(e.getMessage()));
 		} catch (Exception e) {
 			log.error("Exception while getting car", e);
-			return new ResponseEntity<Car>(car, HttpStatus.INTERNAL_SERVER_ERROR);
+			return status(INTERNAL_SERVER_ERROR).body(code(99999).message(e.getMessage()));
 		}
 	}
 
@@ -110,13 +115,13 @@ public class CarController {
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/cars")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	public ResponseEntity<Page<Car>> get(@ApiIgnore Principal principal,
+	public ResponseEntity<?> get(@ApiIgnore Principal principal,
 			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make,
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
 			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum) {
 		log.info("Started fetching cars, pageSize: {}, pageNum {}", pageSize, pageNum);
-		Page<Car> page = null;
 		try {
+			Page<Car> page = null;
 			User user = userService.get(principal.getName());
 			if (!StringUtils.isBlank(make)) {
 				if (!user.getMakes().contains(make)) {
@@ -132,16 +137,16 @@ public class CarController {
 				}
 			}
 			log.info("Finished fetching cars with total: {}", page.getData().size());
-			return new ResponseEntity<>(page, HttpStatus.OK);
+			return ResponseEntity.ok().body(page);
 		} catch (ValidationException e) {
 			log.error("Exception while fetching car", e);
-			return new ResponseEntity<>(page, HttpStatus.BAD_REQUEST);
+			return status(BAD_REQUEST).body(code(99999).message(e.getMessage()));
 		} catch (ForbiddenException e) {
 			log.error("Exception while fetching events", e);
-			return new ResponseEntity<>(page, HttpStatus.FORBIDDEN);
+			return status(FORBIDDEN).body(code(99999).message(e.getMessage()));
 		} catch (Exception e) {
 			log.error("Exception while fetching car", e);
-			return new ResponseEntity<>(page, HttpStatus.INTERNAL_SERVER_ERROR);
+			return status(INTERNAL_SERVER_ERROR).body(code(99999).message(e.getMessage()));
 		}
 	}
 

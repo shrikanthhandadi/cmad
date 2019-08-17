@@ -1,12 +1,32 @@
-export function jwtToken() {
-    let token = JSON.parse(localStorage.getItem('token'));
+export function getJwtToken() {
+    let token = JSON.parse(sessionStorage.getItem('token'));
     return 'Bearer ' + token;
 }
 
-export function isAdmin() {
-    console.log('auth helper is admin ', user);
+export function setJwtToken(token) {
+    sessionStorage.setItem('token', JSON.stringify(token));
+}
 
-    var user =  JSON.parse(localStorage.getItem('user'));
-    console.log('auth helper  roles ',user.roles);
-    return (user.roles.indexOf('ROLE_ADMIN') > -1);
+export function removeJwtToken() {
+    sessionStorage.removeItem('token');
+}
+
+export function getLoggedInUser() {
+    return JSON.parse(sessionStorage.getItem('user'));;
+}
+
+export function setLoggedInUser(user) {
+    sessionStorage.setItem('user', JSON.stringify(user));
+}
+
+export function removeLoggedInUser(user) {
+    sessionStorage.removeItem('user');
+}
+
+export function isLoggedIn() {
+    let token = JSON.parse(sessionStorage.getItem('token'));
+    console.log('isLoggedIn ' ,token);
+    let loggedInUser = getLoggedInUser() ;
+    console.log('isLoggedIn  ',loggedInUser);
+    return token !== null && loggedInUser !== null;
 }

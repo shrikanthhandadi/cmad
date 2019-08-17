@@ -3,10 +3,6 @@ const ACTION = {
     USER_ADD_SUCCESS: "userAddSuccess",
     USER_ADD_FAILED: "userAddFailed",
 
-    USER_LOAD_PENDING: "userLoadPending",
-    USER_LOAD_SUCCESS: "userLoadSuccess",
-    USER_LOAD_FAILED: "userLoadFailed",
-
     USER_FETCHALL_PENDING: "userFetchallPending",
     USER_FETCHALL_SUCCESS: "userFetchallSuccess",
     USER_FETCHALL_FAILED: "userFetchallFailed",
@@ -15,9 +11,10 @@ const ACTION = {
     USER_REMOVE_SUCCESS: "userRemoveSuccess",
     USER_REMOVE_FAILED: "userRemoveFailed",
 
-    USER_LOGIN_PENDING: "userLoginPending",
-    USER_LOGIN_SUCCESS: "userLoginSuccess",
-    USER_LOGIN_FAILED: "userLoginFailed",
+    AUTH_LOGIN_SUCCESS: "authLoginSuccess",
+    AUTH_LOGIN_FAILED: "authLoginFailed",
+
+    AUTH_LOGOUT_SUCCESS: "authLogoutSuccess",
 
     CAR_FETCH_MAKES_PENDING: "carFetchMakesPending",
     CAR_FETCH_MAKES_SUCCESS: "carFetchMakesSuccess",

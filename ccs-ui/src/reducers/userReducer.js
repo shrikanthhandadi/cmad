@@ -2,7 +2,7 @@ import ACTION from '../actions/actionTypes';
 
 const INITIAL_STATE = {
     users: [],
-    user: undefined,
+    loginUser: undefined,
     pending: false,
     error: undefined
 };
@@ -72,7 +72,6 @@ function userReducer(state = INITIAL_STATE, action) {
                 pending: false,
                 error: undefined
             }
-            localStorage.setItem('user', JSON.stringify(action.user));
             break;
         case ACTION.USER_LOAD_FAILED:
             state = {
@@ -91,7 +90,7 @@ function userReducer(state = INITIAL_STATE, action) {
             }
             break;
         case ACTION.USER_REMOVE_SUCCESS:
-            let filtered = state.users.filter(e => e.id != action.id);
+            let filtered = state.users.filter(e => e.id !== action.id);
             state = {
                 ...state,
                 users: [...filtered],
@@ -107,29 +106,6 @@ function userReducer(state = INITIAL_STATE, action) {
             }
             break;
 
-
-        case ACTION.USER_LOGIN_PENDING:
-            state = {
-                ...state,
-                pending: true,
-                error: undefined
-            }
-            break;
-        case ACTION.USER_LOGIN_SUCCESS:
-            state = {
-                ...state,
-                pending: false,
-                error: undefined
-            }
-            localStorage.setItem('token', JSON.stringify(action.token));
-            break;
-        case ACTION.USER_LOGIN_FAILED:
-            state = {
-                ...state,
-                error: action.error,
-                pending: false,
-            }
-            break;
 
 
         default:

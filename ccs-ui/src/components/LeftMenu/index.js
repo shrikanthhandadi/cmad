@@ -1,3 +1,3 @@
-import LeftMenuComponent from './LeftMenuComponent'
+import LeftMenuContainer from './LeftMenuContainer'
 
-export default LeftMenuComponent;
+export default LeftMenuContainer;

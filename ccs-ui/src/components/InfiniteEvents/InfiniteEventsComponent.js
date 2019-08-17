@@ -26,10 +26,10 @@ class InfiniteEventsComponent extends React.Component {
             //table-striped table-bordered table-hover table-dark
             <div className="container">
                 <div className="row">
-                    <div className="col-md-10 col-lg-10 "><h3>Event List</h3></div>
+                    <div className="col-md-9 col-lg-9 "><h3>Event List</h3></div>
                 </div>
                 <div className="row">
-                    <div className="col-md-10 col-lg-10">
+                    <div className="col-md-9 col-lg-9">
                         <table className="table table-striped table-hover">
                             <thead className="thead-dark">
                                 <tr>

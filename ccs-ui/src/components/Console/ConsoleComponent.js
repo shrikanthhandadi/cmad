@@ -1,14 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Header } from "./../Header";
-import { LeftMenu } from "./../LeftMenu";
 import EventFilter from "./../EventFilter";
 import InfiniteEvents from "./../InfiniteEvents";
 import EventSummary from "./../EventSummary";
 
 
 const ConsoleComponent = (props) => (
-   <div className="container  border border-dark" >
+   <div>
       <div className="row">
          <div className="col-md-10 col-lg-10 " >
             <EventFilter />

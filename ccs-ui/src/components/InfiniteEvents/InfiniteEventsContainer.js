@@ -6,10 +6,6 @@ import { loadEvents } from '../../actions/eventActions';
 
 class InfiniteEventsContainer extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentWillMount() {
         this.props.loadEvents(this.props.make, this.props.model, 20, 0);
     }
