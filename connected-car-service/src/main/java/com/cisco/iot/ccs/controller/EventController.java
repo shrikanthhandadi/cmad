@@ -88,7 +88,7 @@ public class EventController {
 					throw new ForbiddenException(
 							"Not allowed to access make: " + make + " Allowed makes are: " + user.getMakes());
 				}
-				if (model != null) {
+				if (StringUtils.isNotBlank(model)) {
 					page = eventService.get(make, model, pageSize, pageNum);
 				} else {
 					page = eventService.get(make, pageSize, pageNum);
@@ -118,17 +118,22 @@ public class EventController {
 	@GetMapping("/stats")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<List<Stat>> getStats(@ApiIgnore Principal principal,
-			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make) {
-		log.info("Started stats for: make {}", make);
+			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make,
+			@ApiParam("Model of car") @RequestParam(name = "model", required = false) String model) {
+		log.info("Started stats for: make {}, model {}", make,model);
 		List<Stat> stats = new ArrayList<>();
 		try {
 			User user = userService.get(principal.getName());
-			if (!StringUtils.isBlank(make)) {
+			if (StringUtils.isNotBlank(make)) {
 				if (!user.getMakes().contains(make)) {
 					throw new ForbiddenException(
 							"Not allowed to access make: " + make + " Allowed makes are: " + user.getMakes());
 				}
-				stats = eventService.getStats(make);
+				if (StringUtils.isNotBlank(model)) {
+					stats = eventService.getStats(make, model);
+				} else {
+					stats = eventService.getStats(make);
+				}
 			} else {
 				stats = eventService.getStats(user.getMakes());
 			}

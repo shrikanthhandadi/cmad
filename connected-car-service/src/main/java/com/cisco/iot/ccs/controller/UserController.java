@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.cisco.iot.ccs.exception.ForbiddenException;
 import com.cisco.iot.ccs.exception.NotFoundException;
 import com.cisco.iot.ccs.exception.ValidationException;
 import com.cisco.iot.ccs.model.JwtAuthenticationResponse;
@@ -85,39 +86,16 @@ public class UserController {
 		}
 	}
 
-	@ApiOperation(value = "Get user", notes = "Get")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 200, message = "Ok", response = Long.class),
-			@ApiResponse(code = 500, message = "Internal server error") })
-	@GetMapping("/users/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	public ResponseEntity<User> get(@PathVariable("id") Long id) {
-		log.info("Started getting user, id: {}.", id);
-		User user = null;
-		try {
-			user = userService.get(id);
-			log.info("Finished getting user.");
-			return new ResponseEntity<>(user, HttpStatus.OK);
-		} catch (ValidationException e) {
-			log.error("Exception while getting user", e);
-			return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			log.error("Exception while getting user", e);
-			return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
 	@ApiOperation(value = "Get all user details  ", notes = "get models")
 	@ApiResponses(value = { @ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 200, message = "Found", response = User.class, responseContainer = "Page"),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/users")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	public ResponseEntity<Page<User>> get(
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	public ResponseEntity<Page<User>> getAll(
+			@ApiParam("Username") @RequestParam(name = "username", required = false) String username,
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
-			@ApiIgnore Principal principal) {
+			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum) {
 		log.info("Started fetching users, pageSize: {}, pageNum {}", pageSize, pageNum);
 		Page<User> page = null;
 		try {
@@ -130,6 +108,110 @@ public class UserController {
 		} catch (Exception e) {
 			log.error("Exception while fetching user", e);
 			return new ResponseEntity<>(page, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@ApiOperation(value = "Update user", notes = "Update")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 200, message = "Ok", response = Long.class),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	@PutMapping("/users/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody User user) {
+		log.info("Started updating user, id: {}.", id);
+		try {
+			user = userService.update(id, user);
+			log.info("Finished updating user.");
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		} catch (NotFoundException e) {
+			log.error("Exception while updating user", e);
+			return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+		} catch (ValidationException e) {
+			log.error("Exception while updating user", e);
+			return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			log.error("Exception while updating user", e);
+			return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@ApiOperation(value = "Delete user", notes = "Delete")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 200, message = "Ok", response = Long.class),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	@DeleteMapping("/users/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<Boolean> delete(@PathVariable("id") Long id) {
+		log.info("Started getting user, id: {}.", id);
+		boolean result = false;
+		try {
+			result = userService.delete(id);
+			log.info("Finished getting user.");
+			return new ResponseEntity<>(result, HttpStatus.OK);
+		} catch (ValidationException e) {
+			log.error("Exception while getting user", e);
+			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			log.error("Exception while getting user", e);
+			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@ApiOperation(value = "Get user", notes = "Get")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 200, message = "Ok", response = Long.class),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	@GetMapping("/users/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+	public ResponseEntity<User> get(@ApiIgnore Principal principal, @PathVariable("id") Long id) {
+		log.info("Started getting user, id: {}.", id);
+		User user = null;
+		try {
+			User loggedInUser = userService.get(principal.getName());
+			if (!loggedInUser.getRoles().contains("ROLE_ADMIN") && loggedInUser.getId() != id) {
+				throw new ForbiddenException("User: " + loggedInUser.getUsername() + " with id: " + loggedInUser.getId()
+						+ " is not allowed to access user id: " + id);
+			}
+			user = userService.get(id);
+			log.info("Finished getting user.");
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		} catch (ValidationException e) {
+			log.error("Exception while getting user", e);
+			return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			log.error("Exception while getting user", e);
+			return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@ApiOperation(value = "Get user by username", notes = "Get")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
+			@ApiResponse(code = 400, message = "Bad request"),
+			@ApiResponse(code = 200, message = "Ok", response = Long.class),
+			@ApiResponse(code = 500, message = "Internal server error") })
+	@GetMapping("/users/username/{username}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+	public ResponseEntity<User> get(@ApiIgnore Principal principal, @PathVariable("username") String username) {
+		log.info("Started getting user, username: {}.", username);
+		User user = null;
+		try {
+			User loggedInUser = userService.get(principal.getName());
+			if (!loggedInUser.getRoles().contains("ROLE_ADMIN") && !loggedInUser.getUsername().equals(username)) {
+				throw new ForbiddenException("User: " + loggedInUser.getUsername()
+						+ " is not allowed to access use with name username: " + username);
+			}
+			user = userService.get(username);
+			log.info("Finished getting user.");
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		} catch (ValidationException e) {
+			log.error("Exception while getting user", e);
+			return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			log.error("Exception while getting user", e);
+			return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -155,54 +237,6 @@ public class UserController {
 		} catch (Exception e) {
 			log.error("Exception while login user", e);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@ApiOperation(value = "Update user", notes = "Update")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 200, message = "Ok", response = Long.class),
-			@ApiResponse(code = 500, message = "Internal server error") })
-	@PutMapping("/users/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody User user) {
-		log.info("Started updating user, id: {}.", id);
-		try {
-			user = userService.update(id, user);
-			log.info("Finished updating user.");
-			return new ResponseEntity<>(user, HttpStatus.OK);
-		} catch (NotFoundException e) {
-			log.error("Exception while updating user", e);
-			return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
-		} catch (ValidationException e) {
-			log.error("Exception while updating user", e);
-			return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			log.error("Exception while updating user", e);
-			return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@ApiOperation(value = "Delete user", notes = "Delete")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Not found"),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 200, message = "Ok", response = Long.class),
-			@ApiResponse(code = 500, message = "Internal server error") })
-	@DeleteMapping("/users/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public ResponseEntity<Boolean> delete(@PathVariable("id") Long id) {
-		log.info("Started getting user, id: {}.", id);
-		boolean result = false;
-		try {
-			result = userService.delete(id);
-			log.info("Finished getting user.");
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		} catch (ValidationException e) {
-			log.error("Exception while getting user", e);
-			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			log.error("Exception while getting user", e);
-			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

@@ -5,9 +5,10 @@ drop table user_car ;
 drop table car ;
 drop table customer_car ;
 drop table hibernate_sequence ;
+drop table user_role;
+drop table user_make;
 drop table user ;
-drop table user_roles;
-drop table user_makes;
+drop table event ;
 
 drop table role ;
 drop table user_role_roles ;
@@ -24,6 +25,8 @@ select * from user_role;
 select * from user;
 update user_role set role = 'ROLE_ADMIN'  where id =1 ;
 select * from user;
+select * from user_role ;
+select * from user_make;
 
 insert into user(id,username, password) values (1,'admin','admin') ;
 insert into user_role(id,role, user_id) values (1,'ADMIN',1 );
@@ -34,13 +37,17 @@ WHERE NOT EXISTS (
     SELECT 	1  FROM user WHERE username = 'admin'
 )  ;
 
-INSERT INTO user_roles (user_id,roles)
+INSERT INTO user_role (user_id,roles)
 SELECT * FROM (SELECT 1,'ROLE_ADMIN' as roles) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_roles WHERE user_id = 1 and roles = 'ROLE_ADMIN'
+    SELECT 	1  FROM user_role WHERE user_id = 1 and roles = 'ROLE_ADMIN'
 )  ;
 
-
+INSERT INTO user_make (user_id,makes)
+SELECT * FROM (SELECT 1,'TATA' as makes) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'TATA'
+)  ;
 
 
 INSERT INTO user_makes (id,name, description)

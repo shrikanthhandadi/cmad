@@ -11,9 +11,9 @@ WHERE NOT EXISTS (
 )  ;
 
 INSERT INTO user_make (user_id,makes)
-SELECT * FROM (SELECT 1,'TATA' as makes) AS tmp
+SELECT * FROM (SELECT 1,'Honda' as makes) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'TATA'
+    SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'Honda'
 )  ;
 
 INSERT INTO user (id,username, password)

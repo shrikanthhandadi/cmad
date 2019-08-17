@@ -11,6 +11,8 @@ public interface CarService {
 
 	Car get(Long id);
 
+	Page<Car> get(int pageSize, int pageNumber);
+
 	Page<Car> get(String make, int pageSize, int pageNumber);
 
 	Page<Car> get(Set<String> makes, int pageSize, int pageNumber);

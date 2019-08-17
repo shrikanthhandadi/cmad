@@ -1,16 +1,16 @@
 import React from "react";
-import { render } from "react-dom";
 import { Header } from "./components/Header";
 import { LeftMenu } from "./components/LeftMenu";
 import { EventFilter } from "./components/EventFilter";
 import { InfiniteEvents } from "./components/InfiniteEvents";
 import { EventSummary } from "./components/EventSummary";
+import { Login } from "./components/Login";
 
 export default class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NzYiLCJpYXQiOjE1NjUyMDIwNjcsImV4cCI6MTU2NjA2NjA2N30.zAkVJml-VGsLRoJJA416e1EFoo9H4FbxGWX68TnjQfKCMH1eSW9S5rmxA_3-ZpXBw2DDYFS2ktURt6z9X_KoNw',
+            token: '',
             make: '',
             model: '',
         }
@@ -20,6 +20,13 @@ export default class App extends React.Component {
         this.setState({
             make: make,
             model: model,
+        });
+    }
+
+    updateToken(token) {
+        console.log('Token update '+token);
+        this.setState({
+            token: 'Bearer '+token,
         });
     }
 
@@ -36,6 +43,11 @@ export default class App extends React.Component {
                         <LeftMenu />
                     </div>
                     <div className="col-md-10 col-lg-10">
+                        <div className="row">
+                            <div className="col-md-10 col-lg-10 " >
+                                <Login updateToken={ this.updateToken.bind(this) } />
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="col-md-10 col-lg-10 " >
                                 <EventFilter updateMakeAndModel={ this.updateMakeAndModel.bind(this) } token={ this.state.token } />

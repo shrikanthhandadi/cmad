@@ -52,4 +52,12 @@ public class CarServiceImpl implements CarService {
 		return page;
 	}
 
+	@Override
+	public Page<Car> get(int pageSize, int pageNumber) {
+		org.springframework.data.domain.Page<Car> entityPage = null;
+		entityPage = carDao.findAll(PageRequest.of(pageNumber, pageSize));
+		Page<Car> page = DataUtils.toPageModel(entityPage, Car.class);
+		return page;
+	}
+
 }
