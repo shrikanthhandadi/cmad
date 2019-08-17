@@ -30,5 +30,5 @@ artifacts:
 # Use the individual files if you are using the CodeDeploy from CodePipeline 
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
     - apps/appspec.yml 
-    - build/*.* 
+    - apps/ccs1.jar
   discard-paths: yes 
