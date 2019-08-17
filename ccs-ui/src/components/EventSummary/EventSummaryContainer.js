@@ -6,10 +6,6 @@ import { getStats } from '../../actions/eventActions';
 
 class EventSummaryContainer extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentWillMount() {
         this.props.getStats(this.props.make, this.props.model);
     }

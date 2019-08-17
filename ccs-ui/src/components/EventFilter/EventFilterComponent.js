@@ -11,14 +11,14 @@ class EventFilterComponent extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-md-1"><h5>Makes:</h5></div>
-                    <div className="col-md-4">
+                    <div className="col-md-3">
                         <Select
                             options={ this.props.makeOptions }
                             onChange={ this.props.onMake }
                         />
                     </div>
                     <div className="col-md-1"><h5>Models:</h5></div>
-                    <div className="col-md-4">
+                    <div className="col-md-3">
                         <Select
                             options={ this.props.modelOptions }
                             onChange={ this.props.onModel }

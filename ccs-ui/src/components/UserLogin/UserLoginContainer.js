@@ -1,6 +1,5 @@
 import React from 'react';
-import { login, loadUser } from '../../actions/userActions';
-import { isAdmin } from '../../actions/authHelper';
+import { login } from '../../actions/authActions';
 import { connect } from 'react-redux';
 import UserLoginComponent from './UserLoginComponent';
 
@@ -20,14 +19,7 @@ class UserLoginContainer extends React.Component {
             username: this.state.username,
             password: this.state.password
          });
-         console.log('UserLoginContainer username ', this.state.username);
-         this.props.loadUser(this.state.username);
-         console.log('UserLoginContainer user ', localStorage.getItem('user'));
-         if (isAdmin()) {
-            this.props.history.push('/list');
-         } else {
-            this.props.history.push('/console');
-         }
+         this.props.history.push('/');
       }
    }
 
@@ -50,8 +42,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
    return {
-      login: (user) => dispatch(login(user)),
-      loadUser: (username) => dispatch(loadUser(username))
+      login: (user) => dispatch(login(user))
    };
 };
 

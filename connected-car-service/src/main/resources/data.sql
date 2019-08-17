@@ -16,6 +16,7 @@ WHERE NOT EXISTS (
     SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'Honda'
 )  ;
 
+/*
 INSERT INTO user (id,username, password)
 SELECT * FROM (SELECT 2,'user' as username, '$2a$10$Ql04XxB8mmw/LeIebsFa0OOwYgUUtxY927XZRzogjO6cRBWcUR2vS' as password) AS tmp
 WHERE NOT EXISTS (
@@ -45,4 +46,4 @@ SELECT * FROM (SELECT 2,'Hyundai' as makes) AS tmp
 WHERE NOT EXISTS (
     SELECT 	1  FROM user_make WHERE user_id = 2 and makes = 'Hyundai'
 )  ;
-
+*/

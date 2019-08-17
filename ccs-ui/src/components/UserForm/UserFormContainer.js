@@ -25,7 +25,7 @@ class UserFormContainer extends React.Component {
             roles: this.state.roles,
             makes: this.state.makes,
          });
-         this.props.history.push('/list');
+         this.props.history.push('/login');
       }
    }
 
@@ -35,12 +35,12 @@ class UserFormContainer extends React.Component {
             onAdd={ this.onAdd }
             onUsername={ e => this.setState({ username: e.target.value }) }
             onPassword={ e => this.setState({ password: e.target.value }) }
-            onRoles={ e => this.setState({ roles:  [...e.target.options].filter(o => o.selected).map(o => o.value) }) }
-            onMakes={ e => this.setState({ makes:  [...e.target.options].filter(o => o.selected).map(o => o.value) }) }
+            onRoles={ e => this.setState({ roles: [...e.target.options].filter(o => o.selected).map(o => o.value) }) }
+            onMakes={ e => this.setState({ makes: [...e.target.options].filter(o => o.selected).map(o => o.value) }) }
          />
       )
    }
-   
+
 }
 
 const mapStateToProps = (state) => {

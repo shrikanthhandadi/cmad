@@ -1,4 +1,4 @@
-import { jwtToken } from './authHelper';
+import { getJwtToken } from './authHelper';
 import ACTION from "./actionTypes";
 
 const APIURL = "http://localhost:9090/ccs";
@@ -17,7 +17,7 @@ export function getStats(make, model) {
     return fetch(APIURL + '/stats?make=' + make + '&model=' + model, {
       headers: {
         'Accept': 'application/json',
-        'Authorization': jwtToken()
+        'Authorization': getJwtToken()
       },
     })
       .then(response => response.json().then(body => ({ response, body })))
@@ -53,7 +53,7 @@ export function fetchModels(make) {
     return fetch(APIURL + '/cars?make=' + make + '&pageNum=0&pageSize=1000', {
       headers: {
         'Accept': 'application/json',
-        'Authorization': jwtToken()
+        'Authorization': getJwtToken()
       },
     })
       .then(response => response.json().then(body => ({ response, body })))
@@ -102,7 +102,7 @@ export function loadEvents(make, model, pageSize, pageNumber) {
     return fetch(APIURL + '/events?make=' + make + '&model=' + model + '&pageSize=' + pageSize + '&pageNum=' + pageNumber, {
       headers: {
         'Accept': 'application/json',
-        'Authorization': jwtToken()
+        'Authorization': getJwtToken()
       },
     })
       .then(response => response.json().then(body => ({ response, body })))
