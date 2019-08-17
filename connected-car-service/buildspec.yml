@@ -32,6 +32,6 @@ artifacts:
 #    - target/HelloWorld.tar.gz 
 # Use the individual files if you are using the CodeDeploy from CodePipeline 
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
-    - appspec.yml 
-    - ccs.war
+    - connected-car-service/apps/appspec.yml 
+    - connected-car-service/apps/ccs.war
   discard-paths: yes 
