@@ -19,8 +19,8 @@ phases:
       - mkdir apps
       - cd apps
       - pwd
-      - cp ../target/ccs1.jar . 
-      - tar -zcvf ../target/ccs1.tar.gz *.* 
+      - cp ../target/ccs1.war . 
+      - tar -zcvf ../target/ccs1.war.gz *.* 
       - cp ../appspec.yml . 
 artifacts: 
   files: 
@@ -30,5 +30,5 @@ artifacts:
 # Use the individual files if you are using the CodeDeploy from CodePipeline 
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
     - apps/appspec.yml 
-    - apps/ccs1.jar
+    - apps/ccs1.war
   discard-paths: yes 
