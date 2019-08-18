@@ -24,8 +24,8 @@ import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 import org.springframework.data.domain.Page;
 
-import com.cisco.iot.ccs.dao.CarDao;
 import com.cisco.iot.ccs.model.Car;
+import com.cisco.iot.ccs.repository.CarRepository;
 
 public class CarServiceImplTest {
 
@@ -34,7 +34,7 @@ public class CarServiceImplTest {
 	public MockitoRule rule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS);
 
 	@Mock
-	private CarDao carDao;
+	private CarRepository carRepository;
 
 	@Mock
 	Page<Car> pageM;
@@ -52,7 +52,7 @@ public class CarServiceImplTest {
 		Car carE = new Car();
 		String make = "audi";
 		carE.setMake(make);
-		Mockito.when(carDao.save(ArgumentMatchers.argThat(new CarArgumentMatchers(carE))))
+		Mockito.when(carRepository.save(ArgumentMatchers.argThat(new CarArgumentMatchers(carE))))
 				.then(new Answer<Car>() {
 					@Override
 					public Car answer(InvocationOnMock invocation) throws Throwable {
@@ -66,7 +66,7 @@ public class CarServiceImplTest {
 		car.setMake(make);
 		car = carService.create(car);
 		assertEquals(make.hashCode(), car.getId().longValue());
-		verify(carDao, Mockito.times(1)).save(any(Car.class));
+		verify(carRepository, Mockito.times(1)).save(any(Car.class));
 	}
 
 	@Test
@@ -75,11 +75,11 @@ public class CarServiceImplTest {
 		String make = "bmw";
 		carE.setMake(make);
 		long id = 123L;
-		Mockito.when(carDao.findById(id)).thenReturn(Optional.of(carE));
+		Mockito.when(carRepository.findById(id)).thenReturn(Optional.of(carE));
 
 		Car car = carService.get(id);
 		assertEquals(make, car.getMake());
-		verify(carDao, Mockito.times(1)).findById(id);
+		verify(carRepository, Mockito.times(1)).findById(id);
 	}
 
 	@Test
@@ -92,12 +92,12 @@ public class CarServiceImplTest {
 		Car carE = new Car();
 		carE.setMake(make);
 		//Mockito.when(pageM.getContent()).thenReturn(Arrays.asList(carE));
-		//Mockito.when(carDao.findAll()).thenReturn(pageM);
+		//Mockito.when(carRepository.findAll()).thenReturn(pageM);
 
 		//com.cisco.iot.ccs.model.Page<Car> page = carService.get(pageSize, pageNumber);
 		//assertEquals(1, page.getData().size());
 		//assertEquals(make, page.getData().get(0).getMake());
-		//verify(carDao, Mockito.times(1)).findAll(pageSize, pageNumber);
+		//verify(carRepository, Mockito.times(1)).findAll(pageSize, pageNumber);
 	}
 
 	private static class CarArgumentMatchers implements ArgumentMatcher<Car> {

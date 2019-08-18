@@ -21,7 +21,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="3" language="java" name="com.cisco.iot.ccs.dao.EventDao" project="connected-car-service" 
+  <interface id="3" language="java" name="com.cisco.iot.ccs.repository.EventRepository" project="connected-car-service" 
     file="/connected-car-service/src/main/java/com/cisco/iot/ccs/dao/EventDao.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="789" y="336"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

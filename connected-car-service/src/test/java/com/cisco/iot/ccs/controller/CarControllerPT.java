@@ -15,6 +15,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,20 +27,29 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestTemplate;
 
 import com.cisco.iot.ccs.model.Car;
+import com.cisco.iot.ccs.model.JwtAuthenticationResponse;
+import com.cisco.iot.ccs.model.User;
 
 public class CarControllerPT {
 
 	private static final Logger log = LoggerFactory.getLogger(CarControllerPT.class);
 
-	RestTemplate restTemplate = new RestTemplate();
+	private static RestTemplate restTemplate = new RestTemplate();
 
 	private static final int port = 9090;
 
-	final String baseUrl = "http://localhost:" + port + "/ccs";
+	private static final String baseUrl = "http://localhost:" + port + "/ccs";
+
+	private static String token = "";
+
+	@BeforeClass
+	public static void setUpBefore() {
+		JwtAuthenticationResponse login = login("user", "user");
+		token = login.getToken();
+	}
 
 	@Before
 	public void setUp() {
-		String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTY1MTEwMzc5LCJleHAiOjE1NjUxMTIxNzl9.W6-bdJHmbien0hotzglGM7YF-5hU9-JzQeMUn8nVx33i6q_nlRIfymnXUKOaGPNgmBzc9HctGMCWOL19JYAUSw";
 		restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
 			@Override
 			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
@@ -138,6 +148,15 @@ public class CarControllerPT {
 			cars.add(car);
 		}
 		return cars;
+	}
+
+	private static JwtAuthenticationResponse login(String username, String password) {
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		ResponseEntity<JwtAuthenticationResponse> response = restTemplate.postForEntity(baseUrl + "/users/login", user,
+				JwtAuthenticationResponse.class);
+		return response.getBody();
 	}
 
 }

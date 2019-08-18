@@ -62,13 +62,13 @@ public class EventController {
 			@ApiResponse(code = 201, message = "created", response = Long.class),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@PostMapping("/events")
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<?> add(@ApiIgnore Principal principal, @RequestBody Event event) {
 		log.info("Started creating event: {}", event);
 		try {
 			event = eventService.create(event);
 			log.info("Finished creating event");
-			Long id = event.getId();
+			String id = event.getId();
 			URI uri = fromCurrentRequestUri().path("/{id}").buildAndExpand(id).toUri();
 			HttpHeaders headers = new HttpHeaders();
 			headers.setLocation(uri);
@@ -88,7 +88,7 @@ public class EventController {
 			@ApiResponse(code = 200, message = "Found", response = Event.class, responseContainer = "List"),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/events")
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<?> get(@ApiIgnore Principal principal,
 			@ApiParam("Pagination page size") @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
 			@ApiParam("Pagination page number") @RequestParam(name = "pageNum", defaultValue = "0") int pageNum,
@@ -99,7 +99,8 @@ public class EventController {
 			Page<Event> page = null;
 			User user = userService.get(principal.getName());
 			if (!StringUtils.isBlank(make)) {
-				if (!user.getMakes().contains(make)) {
+				// if not admin check access for makes
+				if (!user.getRoles().contains("ROLE_ADMIN") && !user.getMakes().contains(make)) {
 					throw new ForbiddenException(
 							"Not allowed to access make: " + make + " Allowed makes are: " + user.getMakes());
 				}
@@ -131,7 +132,7 @@ public class EventController {
 			@ApiResponse(code = 200, message = "Found", response = Stat.class, responseContainer = "List"),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@GetMapping("/stats")
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	public ResponseEntity<?> getStats(@ApiIgnore Principal principal,
 			@ApiParam("Make of car") @RequestParam(name = "make", required = false) String make,
 			@ApiParam("Model of car") @RequestParam(name = "model", required = false) String model) {
@@ -140,7 +141,8 @@ public class EventController {
 			List<Stat> stats = new ArrayList<>();
 			User user = userService.get(principal.getName());
 			if (StringUtils.isNotBlank(make)) {
-				if (!user.getMakes().contains(make)) {
+				// if not admin check access for makes
+				if (!user.getRoles().contains("ROLE_ADMIN") && !user.getMakes().contains(make)) {
 					throw new ForbiddenException(
 							"Not allowed to access make: " + make + " Allowed makes are: " + user.getMakes());
 				}

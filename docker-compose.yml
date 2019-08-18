@@ -32,5 +32,16 @@ services:
          MYSQL_PASSWORD: cmad
       volumes:
       - ccs-data:/var/lib/mysql
+      
+   mongodb:
+      container_name: mongodb
+      image: shrikanthhandadi/mongo:4.1
+      ports:
+      - 27017:27017
+      environment:
+         MONGO_INITDB_DATABASE: admin
+         MONGO_INITDB_ROOT_USERNAME: root
+         MONGO_INITDB_ROOT_PASSWORD: root123
+                   
 volumes:
    ccs-data: 

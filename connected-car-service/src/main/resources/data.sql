@@ -16,7 +16,9 @@ WHERE NOT EXISTS (
     SELECT 	1  FROM user_make WHERE user_id = 1 and makes = 'Honda'
 )  ;
 
-/*
+
+
+-- username user
 INSERT INTO user (id,username, password)
 SELECT * FROM (SELECT 2,'user' as username, '$2a$10$Ql04XxB8mmw/LeIebsFa0OOwYgUUtxY927XZRzogjO6cRBWcUR2vS' as password) AS tmp
 WHERE NOT EXISTS (
@@ -46,4 +48,38 @@ SELECT * FROM (SELECT 2,'Hyundai' as makes) AS tmp
 WHERE NOT EXISTS (
     SELECT 	1  FROM user_make WHERE user_id = 2 and makes = 'Hyundai'
 )  ;
-*/
+
+
+
+-- username admuser
+INSERT INTO user (id,username, password)
+SELECT * FROM (SELECT 3,'admuser' as username, '$2a$10$xrh9tCCmZQtKBhXXFyb1.O9SS5vXRtLDkLnPRtkhYrqPybppj5n.6' as password) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user WHERE username = 'admuser'
+)  ;
+
+INSERT INTO user_role (user_id,roles)
+SELECT * FROM (SELECT 3,'ROLE_USER' as roles) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user_role WHERE user_id = 3 and roles = 'ROLE_USER'
+)  ;
+
+INSERT INTO user_role (user_id,roles)
+SELECT * FROM (SELECT 3,'ROLE_ADMIN' as roles) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user_role WHERE user_id = 3 and roles = 'ROLE_ADMIN'
+)  ;
+
+INSERT INTO user_make (user_id,makes)
+SELECT * FROM (SELECT 3,'BMW' as makes) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user_make WHERE user_id = 3 and makes = 'BMW'
+)  ;
+
+INSERT INTO user_make (user_id,makes)
+SELECT * FROM (SELECT 3,'Audi' as makes) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user_make WHERE user_id = 3 and makes = 'Audi'
+)  ;
+
+

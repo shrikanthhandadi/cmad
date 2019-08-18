@@ -9,9 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cisco.iot.ccs.dao.UserDao;
 import com.cisco.iot.ccs.exception.NotFoundException;
 import com.cisco.iot.ccs.model.User;
+import com.cisco.iot.ccs.repository.UserRepository;
 
 @Service
 public class CcsUserDetailsService implements UserDetailsService {
@@ -19,12 +19,12 @@ public class CcsUserDetailsService implements UserDetailsService {
 	private static final Logger log = LoggerFactory.getLogger(CcsUserDetailsService.class);
 
 	@Autowired
-	private UserDao userDao;
+	private UserRepository userRepository;
 
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userDao.findByUsername(username)
+		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new NotFoundException("User not found with username: " + username));
 		log.info("User login success for user: {}, available roles: {}, assigned makes: {} ", username, user.getRoles(),
 				user.getMakes());
@@ -33,7 +33,7 @@ public class CcsUserDetailsService implements UserDetailsService {
 
 	@Transactional
 	public UserDetails loadUserById(Long id) {
-		User user = userDao.findById(id).orElseThrow(() -> new NotFoundException("User not found for id: " + id));
+		User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found for id: " + id));
 		log.info("User login success for user: {}, available roles: {}, assigned makes: {} ", user.getUsername(),
 				user.getRoles(), user.getMakes());
 		return UserPrincipal.create(user);

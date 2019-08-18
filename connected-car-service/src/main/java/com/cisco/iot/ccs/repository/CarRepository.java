@@ -1,4 +1,4 @@
-package com.cisco.iot.ccs.dao;
+package com.cisco.iot.ccs.repository;
 
 import java.util.Set;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.cisco.iot.ccs.model.Car;
 
 @Repository
-public interface CarDao extends JpaRepository<Car, Long> {
+public interface CarRepository extends JpaRepository<Car, Long> {
 	
 	Page<Car> findByMakeIn(Set<String> makes, Pageable pageable);
 

@@ -71,4 +71,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// Add our custom JWT security filter
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
+
+	public static void main(String[] args) {
+		String encode = new BCryptPasswordEncoder().encode("admuser");
+		System.out.println(encode);
+	}
 }

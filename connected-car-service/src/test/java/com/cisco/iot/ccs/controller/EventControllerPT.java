@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,22 +29,32 @@ import org.springframework.web.client.RestTemplate;
 
 import com.cisco.iot.ccs.model.Car;
 import com.cisco.iot.ccs.model.Event;
+import com.cisco.iot.ccs.model.JwtAuthenticationResponse;
 import com.cisco.iot.ccs.model.Page;
 import com.cisco.iot.ccs.model.Severity;
+import com.cisco.iot.ccs.model.User;
 
 public class EventControllerPT {
 
 	private static final Logger log = LoggerFactory.getLogger(EventControllerPT.class);
 
-	RestTemplate restTemplate = new RestTemplate();
+	private static RestTemplate restTemplate = new RestTemplate();
 
 	private static final int port = 9090;
 
-	final String baseUrl = "http://localhost:" + port + "/ccs";
+	private static final String baseUrl = "http://localhost:" + port + "/ccs";
 	
+	private static String token = "";
+	
+	@BeforeClass
+	public static void setUpBefore() {
+		JwtAuthenticationResponse login = login("user", "user");
+		token = login.getToken();
+	}
+
 	@Before
 	public void setUp() {
-		String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTY1MTExMjAyLCJleHAiOjE1NjUxMTMwMDJ9.zrNxG7DZOR1LnXxrA3lmYYSYsbdhylnOmEyNpwvAqPY6roDyN_PSoNJ0VX30AYtM_OwJgKugm-G6JN50W1XDcg";
+		
 		restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
 			@Override
 			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
@@ -56,7 +67,7 @@ public class EventControllerPT {
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
-		executeCreate("src/test/resources/event/event.csv", 5, 1, Double.valueOf(1 * 60 * 5).intValue());
+		executeCreate("src/test/resources/event/event.csv", 5, 1, Double.valueOf(1 * 60 * 0.2).intValue());
 	}
 
 	private void executeCreate(String location, int concurrency, int rampupSeconds, int loop)
@@ -143,7 +154,7 @@ public class EventControllerPT {
 		Random rand = new Random();
 		List<Severity> svs = Arrays.asList(Severity.values());
 		while (maxSize > 0) {
-			for(Car car : cars) {
+			for (Car car : cars) {
 				Event event = new Event();
 				event.setCarId(car.getId());
 				event.setMake(car.getMake());
@@ -156,6 +167,15 @@ public class EventControllerPT {
 			}
 		}
 		return events;
+	}
+
+	private static JwtAuthenticationResponse login(String username, String password) {
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		ResponseEntity<JwtAuthenticationResponse> response = restTemplate.postForEntity(baseUrl + "/users/login", user,
+				JwtAuthenticationResponse.class);
+		return response.getBody();
 	}
 
 }
