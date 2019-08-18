@@ -43,7 +43,7 @@ pipeline{
 	  		          steps{
 	  		            script{
 	  		              echo 'Deploy (deliver) docker app'
-						  sh 'docker-compose -f ./docker-compose.yml up -d'
+						  sh 'docker-compose -f ./ccs-ui/docker-compose.yml up -d'
 	  		            }
 	  		  }
 	  	}
