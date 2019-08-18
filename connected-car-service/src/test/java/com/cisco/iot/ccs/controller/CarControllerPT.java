@@ -44,7 +44,7 @@ public class CarControllerPT {
 
 	@BeforeClass
 	public static void setUpBefore() {
-		JwtAuthenticationResponse login = login("user", "user");
+		JwtAuthenticationResponse login = login("admin", "admin");
 		token = login.getToken();
 	}
 
