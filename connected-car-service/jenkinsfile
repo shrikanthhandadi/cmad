@@ -70,7 +70,7 @@ pipeline{
 	  		          steps{
 	  		            script{
 	  		              echo 'Deploy (deliver) docker app'
-						  sh 'docker-compose -f ./docker-compose.yml up -d'
+						  sh 'docker-compose -f ./connected-car-service/docker-compose.yml up -d'
 	  		            }
 	  		  }
 	  	}
