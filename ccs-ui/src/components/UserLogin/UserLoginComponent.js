@@ -1,6 +1,10 @@
 import React from 'react';
 
 const UserLoginComponent = (props) => (
+   <div className="container">
+      <div className="row">
+         <div className="col-md-9 col-lg-9"><h4 style={ { color: '#337ab7' } }>User Login</h4></div>
+      </div>
       <div className="row">
          <div className="col-md-10 col-lg-10 " >
             <form>
@@ -24,5 +28,6 @@ const UserLoginComponent = (props) => (
             </form>
          </div>
       </div>
+   </div>
 );
 export default UserLoginComponent;

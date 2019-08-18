@@ -1,13 +1,13 @@
 import React from 'react';
-import EventFilter from "./../EventFilter";
-import InfiniteEvents from "./../InfiniteEvents";
-import EventSummary from "./../EventSummary";
+import EventFilter from "../EventFilter";
+import InfiniteEvents from "../InfiniteEvents";
+import EventSummary from "../EventSummary";
 
 
-const ConsoleComponent = (props) => (
-   <div>
+const EventConsoleComponent = (props) => (
+   <div className="container">
       <div className="row">
-         <div className="col-md-10 col-lg-10 " >
+         <div className="col-md-10 col-lg-10">
             <EventFilter />
          </div>
       </div>
@@ -23,4 +23,4 @@ const ConsoleComponent = (props) => (
       </div>
    </div>
 );
-export default ConsoleComponent;
+export default EventConsoleComponent;

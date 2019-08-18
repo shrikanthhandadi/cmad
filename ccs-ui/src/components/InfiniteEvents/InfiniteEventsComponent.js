@@ -10,7 +10,7 @@ class InfiniteEventsComponent extends React.Component {
             // * there's an error
             // * it's already loading
             // * there's nothing left to load
-            
+
             if (this.props.error || this.props.pending || !this.props.hasMore) return;
 
             var totalHeight = document.documentElement.scrollTop + window.innerHeight + 1;// adding 1 for chrome issue
@@ -25,11 +25,13 @@ class InfiniteEventsComponent extends React.Component {
         return (
             //table-striped table-bordered table-hover table-dark
             <div className="container">
-                <div className="row">
-                    <div className="col-md-9 col-lg-9 "><h3>Event List</h3></div>
+                <div className="row" style={ { paddingBottom: '10px' } } >
+                    <div className="col-md-10 col-lg-10">
+                        <h4 style={ { color: '#337ab7' } }>Event List</h4>
+                    </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-9 col-lg-9">
+                    <div className="col-md-10 col-lg-10" >
                         <table className="table table-striped table-hover">
                             <thead className="thead-dark">
                                 <tr>

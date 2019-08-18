@@ -5,14 +5,18 @@ export default class HeaderComponenet extends React.Component {
 
     render() {
         return (
-            <div className="row">
+            <div className="container">
                 <div>
-                    <h1>Connected Car Service Event Console</h1>
+                    <div className="col col-md-12 col-lg-12 text-right">
+                            { this.props.loggedIn &&
+                                <span>Welcome { this.props.loggedInUser.username }</span>
+                            }
+                    </div>
                 </div>
-                <div>
-                    { this.props.loggedIn &&
-                        <span>Welcome { this.props.loggedInUser.username }</span>
-                    }
+                <div className="row text-center">
+                    <div className="col col-md-12 col-lg-12">
+                            <h1 style={{color: '#337ab7'}}>Connected Car Service</h1>
+                    </div>
                 </div>
             </div>
         );

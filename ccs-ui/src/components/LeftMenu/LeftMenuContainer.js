@@ -1,20 +1,15 @@
-import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { logout } from '../../actions/authActions';
 import LeftMenuComponent from './LeftMenuComponent';
 
-class LeftMenuContainer extends React.Component {
-
-   render() {
-      return (
-         <LeftMenuComponent
-            loggedIn={ this.props.loggedIn }
-            loggedInUser={ this.props.loggedInUser }
-            logout={ this.props.logout }
-         />
-      )
-   }
+LeftMenuComponent.propTypes = {
+   data: PropTypes.shape({
+      loggedIn: PropTypes.bool.isRequired,
+      loggedInUser: PropTypes.object.isRequired,
+      logout: PropTypes.func.isRequired
+   })
 }
 
 const mapStateToProps = (state) => {
@@ -28,4 +23,4 @@ const mapDispatchToProps = (dispatch) => {
    };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeftMenuContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(LeftMenuComponent);

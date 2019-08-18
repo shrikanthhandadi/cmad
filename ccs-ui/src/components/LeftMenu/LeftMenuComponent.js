@@ -3,7 +3,7 @@ import React from "react";
 const LeftMenuComponent = (props) => {
 
    return (
-      <div>
+      <div> 
          <ul className="nav nav-pills nav-stacked" hidden={ props.loggedIn }>
             <li><a href='/#/login'>Login</a></li>
          </ul>
@@ -20,7 +20,7 @@ const LeftMenuComponent = (props) => {
             <li>User</li>
             <li>
                <ul className="nav nav-pills nav-stacked">
-                  <li><a href='/#/console'>Console</a></li>
+                  <li><a href='/#/console'>Event Console</a></li>
                </ul>
             </li>
          </ul>

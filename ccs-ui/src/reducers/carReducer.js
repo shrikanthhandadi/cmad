@@ -75,7 +75,7 @@ function carReducer(state = INITIAL_STATE, action) {
             break;
 
         default:
-            if (action.type.startsWith("user")) {
+            if (action.type.startsWith("car")) {
                 console.log("Unmapped reducer action type: ", action.type);
             }
     }

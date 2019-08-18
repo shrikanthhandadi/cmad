@@ -1,5 +1,6 @@
 import React from 'react';
 import { addUser } from '../../actions/userActions';
+import { fetchMakes } from '../../actions/carActions';
 import { connect } from 'react-redux';
 import UserFormComponent from './UserFormComponent';
 
@@ -10,14 +11,14 @@ class UserFormContainer extends React.Component {
          username: '',
          password: '',
          roles: [],
-         makes: []
+         makeOptions: []
       }
       this.onAdd = () => {
          this.setState({
             username: '',
             password: '',
             roles: [],
-            makes: []
+            makeOptions: []
          });
          this.props.addUser({
             username: this.state.username,
@@ -25,13 +26,25 @@ class UserFormContainer extends React.Component {
             roles: this.state.roles,
             makes: this.state.makes,
          });
-         this.props.history.push('/login');
+         this.props.history.push('/list');
       }
+   }
+
+   componentWillMount() {
+      this.props.fetchMakes();
+   }
+
+   componentWillReceiveProps(nextProps) {
+      let makeOptions = nextProps.makes.map(make => { return { value: make, display: make } });
+      this.setState({
+         makeOptions: makeOptions
+      });
    }
 
    render() {
       return (
          <UserFormComponent
+            makeOptions={ this.state.makeOptions }
             onAdd={ this.onAdd }
             onUsername={ e => this.setState({ username: e.target.value }) }
             onPassword={ e => this.setState({ password: e.target.value }) }
@@ -45,13 +58,15 @@ class UserFormContainer extends React.Component {
 
 const mapStateToProps = (state) => {
    return {
+      makes: state.carReducer.makes
    };
 };
 
 
 const mapDispatchToProps = (dispatch) => {
    return {
-      addUser: (user) => dispatch(addUser(user))
+      addUser: (user) => dispatch(addUser(user)),
+      fetchMakes: () => dispatch(fetchMakes())
    };
 };
 

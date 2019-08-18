@@ -1,3 +1,3 @@
-import ConsoleContainer from './ConsoleContainer'
+import EventConsoleContainer from './EventConsoleContainer'
 
-export default ConsoleContainer;
+export default EventConsoleContainer;

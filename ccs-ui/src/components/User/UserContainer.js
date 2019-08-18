@@ -7,7 +7,10 @@ UserComponent.propTypes = {
    data: PropTypes.shape({
       id: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,
-      password: PropTypes.string.isRequired
+      password: PropTypes.string.isRequired,
+      roles: PropTypes.array.isRequired,
+      makes: PropTypes.array.isRequired,
+      removeUser: PropTypes.func.isRequired
    })
 }
 

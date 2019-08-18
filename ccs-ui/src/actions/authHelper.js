@@ -25,8 +25,6 @@ export function removeLoggedInUser(user) {
 
 export function isLoggedIn() {
     let token = JSON.parse(sessionStorage.getItem('token'));
-    console.log('isLoggedIn ' ,token);
     let loggedInUser = getLoggedInUser() ;
-    console.log('isLoggedIn  ',loggedInUser);
     return token !== null && loggedInUser !== null;
 }
