@@ -62,7 +62,7 @@ public class CarControllerPT {
 
 	@Test
 	public void testExecute() throws IOException, InterruptedException {
-		executeCreate("src/test/resources/car/car.csv", 5, 1, 5);
+		executeCreate("src/test/resources/car/car.csv", 5, 1, 20);
 	}
 
 	private void executeCreate(String location, int concurrency, int rampupSeconds, int loop)

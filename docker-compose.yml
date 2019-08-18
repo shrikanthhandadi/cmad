@@ -31,7 +31,7 @@ services:
          MYSQL_USER: cmad
          MYSQL_PASSWORD: cmad
       volumes:
-      - ccs-data:/var/lib/mysql
+      - ccs-mysql-data:/var/lib/mysql
       
    mongodb:
       container_name: mongodb
@@ -42,6 +42,9 @@ services:
          MONGO_INITDB_DATABASE: admin
          MONGO_INITDB_ROOT_USERNAME: root
          MONGO_INITDB_ROOT_PASSWORD: root123
-                   
+      volumes:
+      - ccs-mongodb-data:/data/db      
+          
 volumes:
-   ccs-data: 
+   ccs-mysql-data:
+   ccs-mongodb-data:

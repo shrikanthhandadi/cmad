@@ -49,6 +49,18 @@ WHERE NOT EXISTS (
     SELECT 	1  FROM user_make WHERE user_id = 2 and makes = 'Hyundai'
 )  ;
 
+INSERT INTO user_make (user_id,makes)
+SELECT * FROM (SELECT 2,'Honda' as makes) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user_make WHERE user_id = 2 and makes = 'Honda'
+)  ;
+
+INSERT INTO user_make (user_id,makes)
+SELECT * FROM (SELECT 2,'Skoda' as makes) AS tmp
+WHERE NOT EXISTS (
+    SELECT 	1  FROM user_make WHERE user_id = 2 and makes = 'Skoda'
+)  ;
+
 
 
 -- username admuser
