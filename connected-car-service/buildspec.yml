@@ -26,6 +26,7 @@ phases:
       - cp ../appspec.yml .
       - tar -zcvf ../build/ccs.war.gz *.* 
       - cd ..
+      - pwd
 artifacts: 
   files: 
 # IMPORTANT 
