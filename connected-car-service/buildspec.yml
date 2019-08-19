@@ -26,6 +26,7 @@ phases:
       - cp ../appspec.yml .
       - ls -al
       - tar -zcvf ../build/connected-car-service.tar.gz *.* 
+      - cd build
       - chmod 777 connected-car-service.tar.gz
       - cd ..
       - pwd
