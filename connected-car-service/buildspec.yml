@@ -22,15 +22,15 @@ phases:
       - mkdir apps
       - cd apps
       - pwd
-      - cp ../build/libs/connected-car-service.war ccs.war 
+      - cp ../build/libs/connected-car-service.war connected-car-service.war 
       - cp ../appspec.yml .
-      - tar -zcvf ../build/ccs.tar.gz *.* 
+      - tar -zcvf ../build/connected-car-service.tar.gz *.* 
       - cd ..
 artifacts: 
   files: 
 # IMPORTANT 
 # You have to use the tar.gz if you are manually executing CodeDeploy 
-    - build/ccs.tar.gz
+    - build/connected-car-service.tar.gz
 # Use the individual files if you are using the CodeDeploy from CodePipeline 
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
  #   - connected-car-service/apps/appspec.yml 
