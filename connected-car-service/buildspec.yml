@@ -36,7 +36,7 @@ phases:
 artifacts: 
   base-directory: build
   files: 
-      - connected-car-service.tar.gz
+      - build/connected-car-service.tar.gz
 # IMPORTANT 
 # You have to use the tar.gz if you are manually executing CodeDeploy 
    
