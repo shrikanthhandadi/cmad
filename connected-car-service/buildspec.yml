@@ -25,7 +25,7 @@ phases:
       - cp ../build/libs/connected-car-service.war ccs.war 
       - cp ../appspec.yml .
       - tar -zcvf ../build/ccs.war.gz *.* 
-      - cd..
+      - cd ..
 artifacts: 
   files: 
 # IMPORTANT 
