@@ -24,7 +24,9 @@ phases:
       - pwd
       - cp ../build/libs/connected-car-service.war . 
       - cp ../appspec.yml .
+      - ls -al
       - tar -zcvf ../build/connected-car-service.tar.gz *.* 
+      - chmod 777 connected-car-service.tar.gz
       - cd ..
       - pwd
 artifacts: 
