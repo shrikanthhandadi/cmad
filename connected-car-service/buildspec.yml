@@ -42,4 +42,4 @@ artifacts:
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
  #   - connected-car-service/apps/appspec.yml 
  #   - connected-car-service/apps/ccs.war
-#  discard-paths: yes 
+  discard-paths: yes 
