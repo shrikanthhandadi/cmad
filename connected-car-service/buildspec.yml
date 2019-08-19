@@ -34,10 +34,12 @@ phases:
       - cd ..
       - pwd
 artifacts: 
+  base-directory: build
   files: 
+      - connected-car-service.tar.gz
 # IMPORTANT 
 # You have to use the tar.gz if you are manually executing CodeDeploy 
-    - build
+   
 # Use the individual files if you are using the CodeDeploy from CodePipeline 
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
  #   - connected-car-service/apps/appspec.yml 
