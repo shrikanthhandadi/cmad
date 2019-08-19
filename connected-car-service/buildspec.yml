@@ -24,12 +24,7 @@ phases:
       - pwd
       - cp ../build/libs/connected-car-service.war ccs.war 
       - cp ../appspec.yml .
-      - tar -zcvf ../build/ccs.war.gz *.* 
-      - cd ..
-      - pwd
-      - ls
-      - cd build
-      - ls
+      - tar -zcvf ../build/ccs.tar.gz *.* 
       - cd ..
 artifacts: 
   files: 
