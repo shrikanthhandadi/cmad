@@ -26,6 +26,8 @@ phases:
       - cp ../appspec.yml .
       - tar -zcvf ../build/ccs.tar.gz *.* 
       - cd ..
+      - cd build
+      - ls
 artifacts: 
   files: 
 # IMPORTANT 
