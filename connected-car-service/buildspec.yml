@@ -27,6 +27,10 @@ phases:
       - tar -zcvf ../build/ccs.war.gz *.* 
       - cd ..
       - pwd
+      - ls
+      - cd build
+      - ls
+      - cd ..
 artifacts: 
   files: 
 # IMPORTANT 
