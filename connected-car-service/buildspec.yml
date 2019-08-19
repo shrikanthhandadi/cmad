@@ -26,6 +26,11 @@ phases:
       - cp ../appspec.yml .
       - tar -zcvf ../build/connected-car-service.tar.gz *.* 
       - cd ..
+      - cd build
+      - pwd
+      - ls
+      - cd ..
+      - ls
 artifacts: 
   files: 
 # IMPORTANT 
