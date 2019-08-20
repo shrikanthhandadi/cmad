@@ -29,7 +29,7 @@ phases:
       - cd ..
 artifacts: 
   files: 
-      - build/connected-car-service.tar.gz
+      - bild/connected-car-service.tar.gz
 # IMPORTANT 
 # You have to use the tar.gz if you are manually executing CodeDeploy 
    
