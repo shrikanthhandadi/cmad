@@ -1,0 +1,41 @@
+version: 1.0
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk11
+    pre_build:
+    commands:
+      - cd ccs-ui
+      - npm install
+  build:
+    commands:
+      - echo Build started on `date`
+      - npm run-script build
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Working on creating the tar ball with the WAR and AppSpec file for CodeDeploy
+      - mkdir appfiles
+      - cd appfiles
+      - pwd
+      - cp ../build/*.* .
+      - cp ../appspec.yml .
+      - ls -altr
+      - tar -zcvf ../build/ccs-ui.tar.gz *.*
+      - cd ..
+      - pwd
+      - ls -ltr build
+artifacts:
+  files:
+# IMPORTANT
+# You have to use the tar.gz if you are manually executing CodeDeploy
+  - ccs-ui/build/ccs-ui.tar.gz
+# Use the individual files if you are using the CodeDeploy from CodePipeline
+# Reason is pipeline does not untar and errors out saying that the appspec file is not there
+#    - ccs-ui/appfiles/appspec.yml
+#    - ccs-ui/appfiles/*.*
+  discard-paths: yes
+ 
+
+
