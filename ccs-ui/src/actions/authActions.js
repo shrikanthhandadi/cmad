@@ -1,6 +1,6 @@
 import ACTION from "./actionTypes";
 
-const APIURL = "http://localhost:9090/ccs";
+const APIURL = "http://localhost:8080/ccs";
 
 export function login(user) {
     return function (dispatch) {
