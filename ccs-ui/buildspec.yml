@@ -30,11 +30,11 @@ artifacts:
   files:
 # IMPORTANT
 # You have to use the tar.gz if you are manually executing CodeDeploy
-  - ccs-ui/build/ccs-ui.tar.gz
+#  - ccs-ui/build/ccs-ui.tar.gz
 # Use the individual files if you are using the CodeDeploy from CodePipeline
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there
-#    - ccs-ui/appfiles/appspec.yml
-#    - ccs-ui/appfiles/*.*
+    - ccs-ui/appfiles/appspec.yml
+    - ccs-ui/appfiles/*.*
   discard-paths: yes
  
 
