@@ -1,40 +1,40 @@
 version: 0.2
  
-phases:  
-  install:  
-    runtime-versions: 
-       java: openjdk11 
-  pre_build:  
+phases:
+  install:
+    runtime-versions:
+      java: openjdk11
+  pre_build:
     commands:
+      - echo Just listing basic information about the environment
       - pwd
+      - which gradle
       - cd connected-car-service
       - chmod 777 gradlew
-      - which gradle
-  build: 
-    commands: 
-      - echo Build started on `date` 
+  build:
+    commands:
+      - echo Build started on `date`
       - ./gradlew clean bootWar
-  post_build: 
-    commands: 
-      - echo Build completed on `date` 
-      - echo Working on creating the tar ball with the WAR and AppSpec file for CodeDeploy 
-      - ls build
-      - mkdir app
-      - cd app
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Working on creating the tar ball with the WAR and AppSpec file for CodeDeploy
+      - mkdir appfiles
+      - cd appfiles
       - pwd
-      - cp ../build/libs/connected-car-service.war . 
+      - cp ../build/libs/connected-car-service.war ccs.war
       - cp ../appspec.yml .
-      - ls -al
-      - tar -zcvf ../build/connected-car-service.tar.gz *.* 
+      - ls -altr
+      - mkdir -p ../target/
+      - tar -zcvf ../target/ccs.tar.gz *.*
       - cd ..
-artifacts: 
-  files: 
-      - build/connected-car-service.tar.gz
-# IMPORTANT 
-# You have to use the tar.gz if you are manually executing CodeDeploy 
-   
-# Use the individual files if you are using the CodeDeploy from CodePipeline 
-# Reason is pipeline does not untar and errors out saying that the appspec file is not there 
-#   - connected-car-service/app/appspec.yml 
-#   - connected-car-service/app/ccs.war
-discard-paths: yes
+artifacts:
+  files:
+# IMPORTANT
+# You have to use the tar.gz if you are manually executing CodeDeploy
+    - target/ccs.tar.gz
+# Use the individual files if you are using the CodeDeploy from CodePipeline
+# Reason is pipeline does not untar and errors out saying that the appspec file is not there
+#    - appfiles/appspec.yml
+#    - appfiles/ccs.war
+  discard-paths: yes
