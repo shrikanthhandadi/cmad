@@ -28,11 +28,12 @@ phases:
       - mkdir -p ../target/
       - tar -zcvf ../target/ccs.tar.gz *.*
       - cd ..
+      - ls -ltr target
 artifacts:
   files:
 # IMPORTANT
 # You have to use the tar.gz if you are manually executing CodeDeploy
-    - target/ccs.tar.gz
+    - connected-car-service/target/ccs.tar.gz
 # Use the individual files if you are using the CodeDeploy from CodePipeline
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there
 #    - appfiles/appspec.yml
