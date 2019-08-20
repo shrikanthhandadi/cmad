@@ -8,7 +8,7 @@ phases:
     commands:
       - pwd
       - cd connected-car-service
-      - chmod 777 gradlew 
+      - chmod 777 gradlew
       - which gradle
   build: 
     commands: 
@@ -19,22 +19,15 @@ phases:
       - echo Build completed on `date` 
       - echo Working on creating the tar ball with the WAR and AppSpec file for CodeDeploy 
       - ls build
-      - mkdir apps
-      - cd apps
+      - mkdir app
+      - cd app
       - pwd
       - cp ../build/libs/connected-car-service.war . 
       - cp ../appspec.yml .
       - ls -al
       - tar -zcvf ../build/connected-car-service.tar.gz *.* 
       - cd ..
-      - ls -al
-      - cd build
-      - chmod 777 connected-car-service.tar.gz
-      - ls -al
-      - cd ..
-      - pwd
 artifacts: 
-  base-directory: build
   files: 
       - build/connected-car-service.tar.gz
 # IMPORTANT 
@@ -42,6 +35,6 @@ artifacts:
    
 # Use the individual files if you are using the CodeDeploy from CodePipeline 
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there 
- #   - connected-car-service/apps/appspec.yml 
- #   - connected-car-service/apps/ccs.war
-  discard-paths: yes 
+#   - connected-car-service/app/appspec.yml 
+#   - connected-car-service/app/ccs.war
+discard-paths: yes
