@@ -1,7 +1,7 @@
 import { getJwtToken } from './authHelper';
 import ACTION from "./actionTypes";
 
-const APIURL = "http://localhost:9090/ccs";
+const APIURL = "http://localhost:8080/ccs";
 
 export function getStats(make, model) {
   if (make === undefined) {
