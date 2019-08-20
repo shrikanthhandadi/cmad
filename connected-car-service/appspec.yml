@@ -2,4 +2,4 @@ version: 0.0
 os: linux 
 files: 
   - source: / 
-    destination: /home/team4  
+    destination: /var/lib/tomcat8/webapps 
