@@ -36,6 +36,6 @@ artifacts:
 #   - connected-car-service/build/ccs.tar.gz
 # Use the individual files if you are using the CodeDeploy from CodePipeline
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there
-    - appfiles/appspec.yml
-    - appfiles/ccs.war
+    - connected-car-service/appfiles/appspec.yml
+    - connected-car-service/appfiles/ccs.war
   discard-paths: yes
