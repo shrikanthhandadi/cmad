@@ -15,7 +15,7 @@ export default class HeaderComponenet extends React.Component {
                 </div>
                 <div className="row text-center">
                     <div className="col col-md-12 col-lg-12">
-                        <h1 style={ { color: '#337ab7' } }>Connected Car Service Sasi</h1>
+                        <h1 style={ { color: '#337ab7' } }>Connected Car Service </h1>
                     </div>
                 </div>
             </div>
