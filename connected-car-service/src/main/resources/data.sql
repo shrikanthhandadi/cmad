@@ -65,9 +65,9 @@ WHERE NOT EXISTS (
 
 -- username admuser
 INSERT INTO user (id,username, password)
-SELECT * FROM (SELECT 3,'admuser' as username, '$2a$10$xrh9tCCmZQtKBhXXFyb1.O9SS5vXRtLDkLnPRtkhYrqPybppj5n.6' as password) AS tmp
+SELECT * FROM (SELECT 3,'super' as username, '$2a$10$kS92zJvaqToigQdh1hP1M./HmQH4MvYWEP7UMLO8l6a2Wxmkf4oR2' as password) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user WHERE username = 'admuser'
+    SELECT 	1  FROM user WHERE username = 'super'
 )  ;
 
 INSERT INTO user_role (user_id,roles)
