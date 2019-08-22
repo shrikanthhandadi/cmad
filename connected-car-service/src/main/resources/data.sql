@@ -65,33 +65,33 @@ WHERE NOT EXISTS (
 
 -- username admuser
 INSERT INTO user (id,username, password)
-SELECT * FROM (SELECT 3,'super' as username, '$2a$10$kS92zJvaqToigQdh1hP1M./HmQH4MvYWEP7UMLO8l6a2Wxmkf4oR2' as password) AS tmp
+SELECT * FROM (SELECT 4,'super' as username, '$2a$10$kS92zJvaqToigQdh1hP1M./HmQH4MvYWEP7UMLO8l6a2Wxmkf4oR2' as password) AS tmp
 WHERE NOT EXISTS (
     SELECT 	1  FROM user WHERE username = 'super'
 )  ;
 
 INSERT INTO user_role (user_id,roles)
-SELECT * FROM (SELECT 3,'ROLE_USER' as roles) AS tmp
+SELECT * FROM (SELECT 4,'ROLE_USER' as roles) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_role WHERE user_id = 3 and roles = 'ROLE_USER'
+    SELECT 	1  FROM user_role WHERE user_id = 4 and roles = 'ROLE_USER'
 )  ;
 
 INSERT INTO user_role (user_id,roles)
-SELECT * FROM (SELECT 3,'ROLE_ADMIN' as roles) AS tmp
+SELECT * FROM (SELECT 4,'ROLE_ADMIN' as roles) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_role WHERE user_id = 3 and roles = 'ROLE_ADMIN'
+    SELECT 	1  FROM user_role WHERE user_id = 4 and roles = 'ROLE_ADMIN'
 )  ;
 
 INSERT INTO user_make (user_id,makes)
-SELECT * FROM (SELECT 3,'BMW' as makes) AS tmp
+SELECT * FROM (SELECT 4,'BMW' as makes) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_make WHERE user_id = 3 and makes = 'BMW'
+    SELECT 	1  FROM user_make WHERE user_id = 4 and makes = 'BMW'
 )  ;
 
 INSERT INTO user_make (user_id,makes)
-SELECT * FROM (SELECT 3,'Audi' as makes) AS tmp
+SELECT * FROM (SELECT 4,'Audi' as makes) AS tmp
 WHERE NOT EXISTS (
-    SELECT 	1  FROM user_make WHERE user_id = 3 and makes = 'Audi'
+    SELECT 	1  FROM user_make WHERE user_id = 4 and makes = 'Audi'
 )  ;
 
 
