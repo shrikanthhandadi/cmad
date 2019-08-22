@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+   name: ccs
+   labels:
+      app: ccs
+spec:
+   ports:
+   -  port: 8080
+   selector:
+      app: ccs
+      tier: frontend
+   type: LoadBalancer
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+   name: ccs
+   labels:
+      app: ccs
+spec:
+   selector:
+      matchLabels:
+         app: ccs
+         tier: frontend
+   replicas: 2
+   strategy:
+      type: Recreate
+   template:
+      metadata:
+         labels:
+            app: ccs
+            tier: frontend
+      spec:
+         containers:
+         -  image: shrikanthhandadi/ccs
+            name: ccs
+            env:
+            -  name: SPRING_PROFILES_ACTIVE
+               value: prod
+            ports:
+            -  containerPort: 8080
+               name: ccs
