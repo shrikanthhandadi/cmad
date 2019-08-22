@@ -4,13 +4,16 @@ metadata:
    name: ccs
    labels:
       app: ccs
+
 spec:
-   ports:
-   -  port: 8080
-   selector:
-      app: ccs
-      tier: frontend
-   type: LoadBalancer
+  selector:
+    app: ccs
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30080
+      
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment

@@ -33,7 +33,7 @@ spec:
             tier: frontend
       spec:
          containers:
-         -  image: shrikanthhandadi/ccs-ui
+         -  image: shrikanthhandadi/ccs-ui:k8
             name: ccsui
             env:
             -  name: SPRING_PROFILES_ACTIVE
