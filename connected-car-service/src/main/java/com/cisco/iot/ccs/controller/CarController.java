@@ -57,7 +57,7 @@ public class CarController {
 	@Autowired
 	private UserService userService;
 
-	@ApiOperation(value = "Create car", notes = "Create")
+	@ApiOperation(value = "Create the car", notes = "Create ")
 	@ApiResponses(value = { @ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 201, message = "created", response = Long.class),
 			@ApiResponse(code = 500, message = "Internal server error") })
@@ -83,7 +83,7 @@ public class CarController {
 		}
 	}
 
-	@ApiOperation(value = "Get car", notes = "Get")
+	@ApiOperation(value = "Get the car", notes = "Get")
 	@ApiResponses(value = { @ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 404, message = "Not found"), @ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 200, message = "Ok", response = Car.class),
